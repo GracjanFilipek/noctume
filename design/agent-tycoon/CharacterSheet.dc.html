@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Agent Tycoon — arkusz postaci</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#080C0A}
+.at-drift{animation:atDrift 6s ease-in-out infinite}
+.at-bob{animation:atBob 2.4s ease-in-out infinite}
+.at-flow{animation:atFlow 1.2s linear infinite}
+.at-glitch{animation:atGlitch 1.6s steps(1,end) infinite}
+.at-flicker{animation:atFlicker 1.6s steps(1,end) infinite}
+.at-blink{animation:atBlink 1s steps(1,end) infinite}
+.at-spin-vb{animation:atSpin 1.6s linear infinite;transform-box:view-box;transform-origin:center}
+.at-beam{animation:atBeam 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}
+.at-ring{animation:atRing 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.at-burst{animation:atBurst 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.at-rise{animation:atRise 2.4s ease-out infinite}
+.at-write{animation:atWrite 2.4s ease-out infinite}
+.at-bar{animation:atBar 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes atDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes atBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes atFlow{to{stroke-dashoffset:-24}}
+@keyframes atGlitch{0%{transform:translate(0,0)}6%{transform:translate(-3px,1px)}9%{transform:translate(3px,-1px)}12%{transform:translate(0,0)}52%{transform:translate(4px,0)}55%{transform:translate(-2px,1px)}58%{transform:translate(0,0)}}
+@keyframes atFlicker{0%{opacity:1}6%{opacity:.25}12%{opacity:1}52%{opacity:.4}58%{opacity:1}}
+@keyframes atBlink{0%{opacity:1}50%{opacity:.3}}
+@keyframes atSpin{to{transform:rotate(360deg)}}
+@keyframes atBeam{0%,100%{transform:rotate(-9deg);opacity:.55}50%{transform:rotate(9deg);opacity:.95}}
+@keyframes atRing{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.3);opacity:0}}
+@keyframes atBurst{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.35);opacity:0}}
+@keyframes atRise{0%{transform:translateY(0);opacity:.8}100%{transform:translateY(-26px);opacity:0}}
+@keyframes atWrite{0%{stroke-dashoffset:32}55%,100%{stroke-dashoffset:0}}
+@keyframes atBar{0%,100%{transform:scaleY(.55)}50%{transform:scaleY(1)}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important}}
+</style>
+</helmet>
+<div style="width: 1600px; height: 1180px; box-sizing: border-box; padding: 40px; display: flex; flex-direction: column; gap: 20px; background: #080C0A; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; color: #E8EEE4">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true"><defs><linearGradient id="csBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD8EA" stop-opacity="0.75"/><stop offset="1" stop-color="#8FD8EA" stop-opacity="0"/></linearGradient></defs></svg>
+
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 38px; letter-spacing: 0.04em">Arkusz postaci</h1>
+<p style="margin: 0; font-size: 13.5px; color: #AAB9AE">3 role × 5 stanów + ewolucja. Wektor na siatce 64 × 64 · mapa 84 px · karta 62 px · arkusz 112 px.</p>
+</div>
+<p style="margin: 0; max-width: 520px; font-size: 12.5px; line-height: 1.55; color: #7E8F83; text-align: right">Stan czytamy z trzech kanałów naraz: sylwetka i ruch, znak nad głową, kolor. Każdy z nich osobno wystarcza, by rozpoznać stan.</p>
+</div>
+
+<!-- nagłówki kolumn -->
+<div style="display: flex; gap: 10px; align-items: flex-end">
+<div style="width: 180px; flex-shrink: 0"></div>
+<div style="width: 160px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 1.2 A5 5 0 1 0 10.8 8.2 A4 4 0 0 1 7.5 1.2 Z" fill="#AAB9AE"/></svg>BEZCZYNNY</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">dryf ±6 px / 6 s · 60% jasności · desaturacja</span>
+</div>
+<div style="width: 160px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#7BE495" stroke-opacity="0.3" stroke-width="1.6"/><path class="at-spin-vb" d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" fill="none" stroke="#7BE495" stroke-width="1.6" stroke-linecap="round"/></svg>PRACUJE</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">unoszenie ±4 px / 2,4 s · efekt roli · pełna jasność</span>
+</div>
+<div style="width: 160px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; color: #FF8A96"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 L11.2 10.5 H0.8 Z" fill="#FF4D5E"/><rect x="5.3" y="4" width="1.4" height="3.6" fill="#1A0710"/><rect x="5.3" y="8.3" width="1.4" height="1.3" fill="#1A0710"/></svg>UTKNĄŁ</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">zamrożony · glitch steps() 1,6 s · rozszczepienie RGB</span>
+</div>
+<div style="width: 160px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; color: #FFB547"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0.8 L11.2 6 L6 11.2 L0.8 6 Z" fill="#FFB547"/><path d="M3.8 6 L5.4 7.6 L8.4 4.6" fill="none" stroke="#1A1206" stroke-width="1.4"/></svg>SUKCES</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">rozbłysk 700 ms · energia leci do licznika</span>
+</div>
+<div style="width: 160px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; color: #C4C9C2"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M9.6 3.4 A4.5 4.5 0 1 0 10.5 6.8" fill="none" stroke="#C4C9C2" stroke-width="1.6" stroke-linecap="round"/><path d="M7.6 1.6 L10.6 2.6 L9.2 5.2 Z" fill="#C4C9C2"/></svg>PORAŻKA</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">iskry + dym 900 ms · szarość · restart 3 s</span>
+</div>
+<div style="width: 24px; flex-shrink: 0"></div>
+<div style="width: 140px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em">FORMA I</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">poziom 1–2</span>
+</div>
+<div style="width: 140px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em">FORMA II</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">poziom 3–4</span>
+</div>
+<div style="width: 140px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em">FORMA III</span>
+<span style="font-size: 11px; line-height: 1.5; color: #7E8F83">poziom 5+</span>
+</div>
+</div>
+
+<!-- ============ RESEARCHER ============ -->
+<div style="display: flex; gap: 10px; height: 280px">
+<div style="width: 180px; flex-shrink: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 4px 0 0">
+<div style="display: flex; align-items: center; gap: 10px"><div style="width: 12px; height: 12px; border-radius: 50%; background: #8FD8EA"></div><span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px">Researcher</span></div>
+<span style="font-size: 12px; line-height: 1.55; color: #AAB9AE">Lewitujący dron-skaner z wiązką światła.</span>
+<span style="font-size: 11.5px; line-height: 1.55; color: #7E8F83">Ruch: płynny ślizg po łuku, zatrzymuje się do skanu.</span>
+<span style="font-size: 11.5px; color: #7E8F83">Strefa: Obserwatorium</span>
+</div>
+
+<!-- R · bezczynny -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="30" ry="4" fill="#AAB9AE" opacity="0.15"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; opacity: 0.6; filter: saturate(0.5) brightness(0.85)"><div class="at-drift">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA" opacity="0.5"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#8FD8EA" opacity="0.5"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+</div></div>
+<svg width="18" height="18" viewBox="0 0 12 12" style="position: absolute; left: 118px; top: 40px" aria-hidden="true"><path d="M7.5 1.2 A5 5 0 1 0 10.8 8.2 A4 4 0 0 1 7.5 1.2 Z" fill="#AAB9AE"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Soczewka przygaszona, dron dryfuje przy kopule.</div>
+</div>
+
+<!-- R · pracuje -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><polygon class="at-beam" points="79,110 50,184 108,184" fill="url(#csBeam)"/><ellipse cx="79" cy="178" rx="32" ry="4" fill="#8FD8EA" opacity="0.35"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 8px rgba(143,216,234,0.55))"><div class="at-bob">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA"/><circle cx="30.2" cy="33.2" r="1.4" fill="#FFFFFF"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#8FD8EA"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+</div></div>
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><g fill="#C4ECF5"><rect class="at-rise" x="64" y="168" width="3" height="3"/><rect class="at-rise" style="animation-delay: .8s" x="88" y="172" width="3" height="3"/><rect class="at-rise" style="animation-delay: 1.6s" x="76" y="160" width="2.5" height="2.5"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Wiązka skanu ±9° / 2,4 s; cząstki danych płyną w górę.</div>
+</div>
+
+<!-- R · utknął -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #170C0E; border: 1px solid #5A1E26; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #110A0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="30" ry="4" fill="#FF4D5E" opacity="0.3"/><polygon points="79,110 60,170 98,170" fill="#FF4D5E" opacity="0.12"/></svg>
+<div class="at-glitch" style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(2px 0 0 rgba(255,77,94,0.85)) drop-shadow(-2px 0 0 rgba(123,228,149,0.4))">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#FF4D5E" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#FF4D5E"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#FF4D5E"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+</div>
+<svg class="at-flicker" width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><rect x="36" y="96" width="90" height="4" fill="#FF4D5E" opacity="0.55"/><rect x="46" y="124" width="70" height="3" fill="#FF4D5E" opacity="0.45"/><rect x="30" y="142" width="50" height="3" fill="#7BE495" opacity="0.35"/></svg>
+<svg width="44" height="40" viewBox="0 0 44 40" style="position: absolute; left: 57px; top: 16px; overflow: visible" aria-hidden="true"><circle class="at-ring" cx="22" cy="22" r="16" fill="none" stroke="#FF4D5E" stroke-width="1.5"/><g class="at-blink"><path d="M22 8 L35 32 H9 Z" fill="#2A0710" stroke="#FF4D5E" stroke-width="2.2" stroke-linejoin="round"/><rect x="20.8" y="15" width="2.4" height="9" fill="#FF4D5E"/><rect x="20.8" y="26.5" width="2.4" height="2.6" fill="#FF4D5E"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FF8A96">Soczewka czerwona, wiązka zgaszona w pół skanu.</div>
+</div>
+
+<!-- R · sukces -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #16110A; border: 1px solid #5A4318; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0F0E0A">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><g class="at-burst" stroke="#FFB547" stroke-width="2.5" stroke-linecap="round"><path d="M79 52 V68 M79 148 V164 M23 108 H39 M119 108 H135 M40 69 L51 80 M107 136 L118 147 M118 69 L107 80 M51 136 L40 147"/></g><circle class="at-ring" cx="79" cy="108" r="46" fill="none" stroke="#FFB547" stroke-width="2"/><ellipse cx="79" cy="176" rx="32" ry="4" fill="#FFB547" opacity="0.35"/><path class="at-flow" d="M100 90 C120 70 128 40 154 8" fill="none" stroke="#FFB547" stroke-width="2.5" stroke-dasharray="4 8" stroke-linecap="round"/><circle cx="128" cy="44" r="3.5" fill="#FFB547"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 10px rgba(255,181,71,0.6)) brightness(1.15)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA"/><circle cx="30.2" cy="33.2" r="1.4" fill="#FFFFFF"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#FFB547"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+</div>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 22px" aria-hidden="true"><path d="M6 0.8 L11.2 6 L6 11.2 L0.8 6 Z" fill="#FFB547"/><path d="M3.8 6 L5.4 7.6 L8.4 4.6" fill="none" stroke="#1A1206" stroke-width="1.2"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FFD08A">Rozbłysk, antena złota; kula energii leci do HUD.</div>
+</div>
+
+<!-- R · porażka -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #111412; border: 1px solid #2A302C; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0C0F0D">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="178" rx="30" ry="4" fill="#6A716B" opacity="0.3"/></svg>
+<div style="position: absolute; left: 23px; top: 58px; width: 112px; height: 112px; transform: rotate(-12deg); filter: grayscale(1) brightness(0.7)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><path d="M28 31 L36 39 M36 31 L28 39" stroke="#6F8577" stroke-width="1.5"/><line x1="32" y1="19" x2="30" y2="11" stroke="#6F8577" stroke-width="1.5"/></svg>
+</div>
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<g fill="#6A716B"><circle class="at-rise" cx="70" cy="80" r="8" opacity="0.55"/><circle class="at-rise" style="animation-delay: .8s" cx="88" cy="76" r="6" opacity="0.5"/><circle class="at-rise" style="animation-delay: 1.6s" cx="80" cy="70" r="9" opacity="0.4"/></g>
+<g class="at-flicker" stroke="#FFF1C9" stroke-width="2" stroke-linecap="round"><path d="M44 104 L36 98 M42 116 L32 118 M118 120 L128 126 M112 96 L122 88"/></g>
+</svg>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 20px" aria-hidden="true"><g class="at-spin-vb"><path d="M9.6 3.4 A4.5 4.5 0 1 0 10.5 6.8" fill="none" stroke="#C4C9C2" stroke-width="1.4" stroke-linecap="round"/><path d="M7.6 1.6 L10.6 2.6 L9.2 5.2 Z" fill="#C4C9C2"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #C4C9C2">Soczewka przekreślona, przechył, dym; potem kapsuła.</div>
+</div>
+
+<div style="width: 24px; flex-shrink: 0; display: flex; justify-content: center"><div style="width: 1px; height: 280px; background: #24332B"></div></div>
+
+<!-- R · Forma I -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="26" ry="4" fill="#8FD8EA" opacity="0.25"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA"/><circle cx="30.2" cy="33.2" r="1.4" fill="#FFFFFF"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#8FD8EA"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Soczewka, 1 antena, 1 światło.</div>
+</div>
+<!-- R · Forma II -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="30" ry="4" fill="#8FD8EA" opacity="0.35"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; filter: drop-shadow(0 0 6px rgba(143,216,234,0.4))" aria-hidden="true"><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA"/><circle cx="30.2" cy="33.2" r="1.4" fill="#FFFFFF"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#8FD8EA"/><circle cx="18.5" cy="37" r="1.6" fill="#8FD8EA"/><circle cx="45.5" cy="37" r="1.6" fill="#8FD8EA"/><line x1="40" y1="21" x2="45" y2="14" stroke="#6F8577" stroke-width="1.2"/><circle cx="45.5" cy="13.5" r="1.5" fill="#E8EEE4"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">+ światła boczne, druga antena.</div>
+</div>
+<!-- R · Forma III -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #3F6E7A; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="36" ry="5" fill="#8FD8EA" opacity="0.45"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; overflow: visible; filter: drop-shadow(0 0 8px rgba(143,216,234,0.55))" aria-hidden="true"><ellipse cx="32" cy="33" rx="30" ry="23" fill="none" stroke="#8FD8EA" stroke-opacity="0.5" stroke-width="1" stroke-dasharray="3 3"/><path d="M11 40 L2 45 L8 46 Z" fill="#28382F" stroke="#6F8577" stroke-width="0.8"/><path d="M53 40 L62 45 L56 46 Z" fill="#28382F" stroke="#6F8577" stroke-width="0.8"/><path d="M15 31 L3 25 L6 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><path d="M49 31 L61 25 L58 36 Z" fill="#28382F" stroke="#6F8577" stroke-width="1"/><ellipse cx="32" cy="33" rx="18" ry="14" fill="#1E2A24" stroke="#6F8577" stroke-width="1.5"/><path d="M19 28 Q32 15 45 28" fill="none" stroke="#CFD9CC" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="35" r="11" fill="none" stroke="#8FD8EA" stroke-opacity="0.6"/><circle cx="32" cy="35" r="8.5" fill="#07110E" stroke="#8FD8EA" stroke-width="2"/><circle cx="32" cy="35" r="4.5" fill="#8FD8EA"/><circle cx="30.2" cy="33.2" r="1.4" fill="#FFFFFF"/><line x1="32" y1="19" x2="32" y2="10" stroke="#6F8577" stroke-width="1.5"/><circle cx="32" cy="9" r="2.2" fill="#8FD8EA"/><circle cx="18.5" cy="37" r="1.6" fill="#8FD8EA"/><circle cx="45.5" cy="37" r="1.6" fill="#8FD8EA"/><line x1="40" y1="21" x2="45" y2="14" stroke="#6F8577" stroke-width="1.2"/><circle cx="45.5" cy="13.5" r="1.5" fill="#E8EEE4"/><line x1="24" y1="21" x2="19" y2="14" stroke="#6F8577" stroke-width="1.2"/><circle cx="18.5" cy="13.5" r="1.5" fill="#E8EEE4"/><circle cx="58" cy="10" r="2.2" fill="#C4ECF5"/><ellipse cx="58" cy="10" rx="4.5" ry="1.5" fill="none" stroke="#C4ECF5" stroke-width="0.8"/><path d="M25 46 L32 51 L39 46" fill="none" stroke="#8FD8EA" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">+ aura, satelita, podwójna soczewka.</div>
+</div>
+</div>
+
+<!-- ============ WRITER ============ -->
+<div style="display: flex; gap: 10px; height: 280px">
+<div style="width: 180px; flex-shrink: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 4px 0 0">
+<div style="display: flex; align-items: center; gap: 10px"><div style="width: 12px; height: 12px; transform: rotate(45deg); background: #FF9466"></div><span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px">Writer</span></div>
+<span style="font-size: 12px; line-height: 1.55; color: #AAB9AE">Smukła istota z holograficznymi piórami.</span>
+<span style="font-size: 11.5px; line-height: 1.55; color: #7E8F83">Ruch: płynie pionowo, pióra falują za ruchem.</span>
+<span style="font-size: 11.5px; color: #7E8F83">Strefa: Kuźnia Słów</span>
+</div>
+
+<!-- W · bezczynny -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="24" ry="4" fill="#AAB9AE" opacity="0.15"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; opacity: 0.6; filter: saturate(0.5) brightness(0.85)"><div class="at-drift">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 27 C22 24 18 18 17 10 C21 15 25 19 31 24 Z" fill="#FF9466" fill-opacity="0.2" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C42 24 46 18 47 10 C43 15 39 19 33 24 Z" fill="#8FD8EA" fill-opacity="0.16" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF9466" stroke-width="2" stroke-linecap="round" opacity="0.5"/><circle cx="32" cy="33" r="2.2" fill="#FF9466" opacity="0.5"/></svg>
+</div></div>
+<svg width="18" height="18" viewBox="0 0 12 12" style="position: absolute; left: 106px; top: 44px" aria-hidden="true"><path d="M7.5 1.2 A5 5 0 1 0 10.8 8.2 A4 4 0 0 1 7.5 1.2 Z" fill="#AAB9AE"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Pióra złożone, wizjer przygaszony.</div>
+</div>
+
+<!-- W · pracuje -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="26" ry="4" fill="#FF9466" opacity="0.35"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 8px rgba(255,148,102,0.55))"><div class="at-bob">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 27 C20 22 14 13 14 4 C19 11 25 17 31 24 Z" fill="#FF9466" fill-opacity="0.35" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C44 22 50 13 50 4 C45 11 39 17 33 24 Z" fill="#8FD8EA" fill-opacity="0.3" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF9466" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF9466"/><path d="M34 30 C40 33 43 37 45 42" fill="none" stroke="#CFD9CC" stroke-width="1.3" stroke-linecap="round"/><path d="M45 42 L50 36" stroke="#FF9466" stroke-width="1.6" stroke-linecap="round"/><circle cx="50.5" cy="35.5" r="1.5" fill="#FFFFFF"/></svg>
+</div></div>
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><g stroke="#FF9466" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="32"><path class="at-write" d="M114 92 H146"/><path class="at-write" style="animation-delay: .5s" d="M114 102 H142"/><path class="at-write" style="animation-delay: 1s" d="M114 112 H136"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Pióra świecą; glify piszą się w powietrzu.</div>
+</div>
+
+<!-- W · utknął -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #170C0E; border: 1px solid #5A1E26; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #110A0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="26" ry="4" fill="#FF4D5E" opacity="0.3"/><g stroke="#5E7166" stroke-width="2.5" stroke-linecap="round"><path d="M114 92 H146"/><path d="M114 102 H124"/></g><path d="M126 102 H134" stroke="#FF4D5E" stroke-width="2.5" stroke-linecap="round"/></svg>
+<div class="at-glitch" style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(2px 0 0 rgba(255,77,94,0.85)) drop-shadow(-2px 0 0 rgba(123,228,149,0.4))">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 27 C20 22 14 13 14 4 C19 11 25 17 31 24 Z" fill="#FF9466" fill-opacity="0.28" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C44 22 50 13 50 4 C45 11 39 17 33 24 Z" fill="#8FD8EA" fill-opacity="0.22" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF4D5E" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF4D5E"/><path d="M34 30 C40 33 43 37 45 42" fill="none" stroke="#CFD9CC" stroke-width="1.3" stroke-linecap="round"/><path d="M45 42 L50 36" stroke="#FF9466" stroke-width="1.6" stroke-linecap="round"/></svg>
+</div>
+<svg class="at-flicker" width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><rect x="40" y="90" width="80" height="4" fill="#FF4D5E" opacity="0.55"/><rect x="50" y="122" width="60" height="3" fill="#FF4D5E" opacity="0.45"/><rect x="36" y="146" width="44" height="3" fill="#7BE495" opacity="0.35"/></svg>
+<svg width="44" height="40" viewBox="0 0 44 40" style="position: absolute; left: 57px; top: 16px; overflow: visible" aria-hidden="true"><circle class="at-ring" cx="22" cy="22" r="16" fill="none" stroke="#FF4D5E" stroke-width="1.5"/><g class="at-blink"><path d="M22 8 L35 32 H9 Z" fill="#2A0710" stroke="#FF4D5E" stroke-width="2.2" stroke-linejoin="round"/><rect x="20.8" y="15" width="2.4" height="9" fill="#FF4D5E"/><rect x="20.8" y="26.5" width="2.4" height="2.6" fill="#FF4D5E"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FF8A96">Zdanie urwane w pół słowa; wizjer czerwony.</div>
+</div>
+
+<!-- W · sukces -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #16110A; border: 1px solid #5A4318; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0F0E0A">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><g class="at-burst" stroke="#FFB547" stroke-width="2.5" stroke-linecap="round"><path d="M79 52 V68 M79 148 V164 M23 108 H39 M119 108 H135 M40 69 L51 80 M107 136 L118 147 M118 69 L107 80 M51 136 L40 147"/></g><circle class="at-ring" cx="79" cy="108" r="46" fill="none" stroke="#FFB547" stroke-width="2"/><ellipse cx="79" cy="176" rx="28" ry="4" fill="#FFB547" opacity="0.35"/><path class="at-flow" d="M100 90 C120 70 128 40 154 8" fill="none" stroke="#FFB547" stroke-width="2.5" stroke-dasharray="4 8" stroke-linecap="round"/><circle cx="128" cy="44" r="3.5" fill="#FFB547"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 10px rgba(255,181,71,0.6)) brightness(1.15)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 27 C18 22 10 12 8 2 C16 10 24 16 31 24 Z" fill="#FF9466" fill-opacity="0.35" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C46 22 54 12 56 2 C48 10 40 16 33 24 Z" fill="#8FD8EA" fill-opacity="0.3" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FFB547" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF9466"/></svg>
+</div>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 22px" aria-hidden="true"><path d="M6 0.8 L11.2 6 L6 11.2 L0.8 6 Z" fill="#FFB547"/><path d="M3.8 6 L5.4 7.6 L8.4 4.6" fill="none" stroke="#1A1206" stroke-width="1.2"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FFD08A">Pióra rozkładają się szeroko na 700 ms.</div>
+</div>
+
+<!-- W · porażka -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #111412; border: 1px solid #2A302C; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0C0F0D">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="178" rx="26" ry="4" fill="#6A716B" opacity="0.3"/></svg>
+<div style="position: absolute; left: 23px; top: 58px; width: 112px; height: 112px; transform: rotate(-12deg); filter: grayscale(1) brightness(0.7)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><path d="M29 28 C22 30 16 34 12 40 C18 35 24 32 30 30 Z" fill="#FF9466" fill-opacity="0.2" stroke="#FF9466" stroke-width="1"/><path d="M35 28 C42 30 48 34 52 40 C46 35 40 32 34 30 Z" fill="#8FD8EA" fill-opacity="0.16" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M29 13 L35 17 M35 13 L29 17" stroke="#CFD9CC" stroke-width="1.3"/></svg>
+</div>
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<g fill="#6A716B"><circle class="at-rise" cx="70" cy="80" r="8" opacity="0.55"/><circle class="at-rise" style="animation-delay: .8s" cx="88" cy="76" r="6" opacity="0.5"/><circle class="at-rise" style="animation-delay: 1.6s" cx="80" cy="70" r="9" opacity="0.4"/></g>
+<g class="at-flicker" stroke="#FFF1C9" stroke-width="2" stroke-linecap="round"><path d="M54 110 L44 104 M50 132 L40 136 M108 124 L118 130 M106 100 L116 92"/></g>
+</svg>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 20px" aria-hidden="true"><g class="at-spin-vb"><path d="M9.6 3.4 A4.5 4.5 0 1 0 10.5 6.8" fill="none" stroke="#C4C9C2" stroke-width="1.4" stroke-linecap="round"/><path d="M7.6 1.6 L10.6 2.6 L9.2 5.2 Z" fill="#C4C9C2"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #C4C9C2">Pióra opadają, wizjer gaśnie krzyżykiem.</div>
+</div>
+
+<div style="width: 24px; flex-shrink: 0; display: flex; justify-content: center"><div style="width: 1px; height: 280px; background: #24332B"></div></div>
+
+<!-- W · Forma I -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="22" ry="4" fill="#FF9466" opacity="0.25"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px" aria-hidden="true"><path d="M29 27 C20 22 14 13 14 4 C19 11 25 17 31 24 Z" fill="#FF9466" fill-opacity="0.28" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C44 22 50 13 50 4 C45 11 39 17 33 24 Z" fill="#8FD8EA" fill-opacity="0.22" stroke="#8FD8EA" stroke-width="1"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF9466" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF9466"/><path d="M34 30 C40 33 43 37 45 42" fill="none" stroke="#CFD9CC" stroke-width="1.3" stroke-linecap="round"/><path d="M45 42 L50 36" stroke="#FF9466" stroke-width="1.6" stroke-linecap="round"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Para piór, rdzeń, rysik.</div>
+</div>
+<!-- W · Forma II -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="26" ry="4" fill="#FF9466" opacity="0.35"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; filter: drop-shadow(0 0 6px rgba(255,148,102,0.4))" aria-hidden="true"><path d="M29 27 C20 22 14 13 14 4 C19 11 25 17 31 24 Z" fill="#FF9466" fill-opacity="0.28" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C44 22 50 13 50 4 C45 11 39 17 33 24 Z" fill="#8FD8EA" fill-opacity="0.22" stroke="#8FD8EA" stroke-width="1"/><path d="M30 25 C24 18 22 10 24 2 C26 10 28 16 31.5 22 Z" fill="#FF9466" fill-opacity="0.35" stroke="#FF9466" stroke-width="0.9"/><path d="M34 25 C40 18 42 10 40 2 C38 10 36 16 32.5 22 Z" fill="#8FD8EA" fill-opacity="0.3" stroke="#8FD8EA" stroke-width="0.9"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF9466" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF9466"/><circle cx="32" cy="40" r="1.4" fill="#FF9466"/><circle cx="32" cy="46" r="1.1" fill="#FF9466" opacity="0.8"/><path d="M34 30 C40 33 43 37 45 42" fill="none" stroke="#CFD9CC" stroke-width="1.3" stroke-linecap="round"/><path d="M45 42 L50 36" stroke="#FF9466" stroke-width="1.6" stroke-linecap="round"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">+ druga para piór, światła rdzenia.</div>
+</div>
+<!-- W · Forma III -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #7A4431; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="32" ry="5" fill="#FF9466" opacity="0.45"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; overflow: visible; filter: drop-shadow(0 0 8px rgba(255,148,102,0.55))" aria-hidden="true"><ellipse cx="32" cy="32" rx="30" ry="31" fill="none" stroke="#FF9466" stroke-opacity="0.35" stroke-dasharray="3 3"/><path d="M28 30 C16 30 8 24 4 16 C12 22 20 25 29 27 Z" fill="#FF9466" fill-opacity="0.22" stroke="#FF9466" stroke-width="0.9"/><path d="M36 30 C48 30 56 24 60 16 C52 22 44 25 35 27 Z" fill="#8FD8EA" fill-opacity="0.2" stroke="#8FD8EA" stroke-width="0.9"/><path d="M29 27 C20 22 14 13 14 4 C19 11 25 17 31 24 Z" fill="#FF9466" fill-opacity="0.28" stroke="#FF9466" stroke-width="1"/><path d="M35 27 C44 22 50 13 50 4 C45 11 39 17 33 24 Z" fill="#8FD8EA" fill-opacity="0.22" stroke="#8FD8EA" stroke-width="1"/><path d="M30 25 C24 18 22 10 24 2 C26 10 28 16 31.5 22 Z" fill="#FF9466" fill-opacity="0.35" stroke="#FF9466" stroke-width="0.9"/><path d="M34 25 C40 18 42 10 40 2 C38 10 36 16 32.5 22 Z" fill="#8FD8EA" fill-opacity="0.3" stroke="#8FD8EA" stroke-width="0.9"/><path d="M32 22 C39 27 38 42 32 57 C26 42 25 27 32 22 Z" fill="#1E2A24" stroke="#CFD9CC" stroke-width="1.3"/><circle cx="32" cy="15" r="10" fill="none" stroke="#FF9466" stroke-opacity="0.7" stroke-dasharray="1.5 2.5"/><circle cx="32" cy="15" r="6.5" fill="#26342D" stroke="#CFD9CC" stroke-width="1.3"/><path d="M28.5 15 H35.5" stroke="#FF9466" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="33" r="2.2" fill="#FF9466"/><circle cx="32" cy="40" r="1.4" fill="#FF9466"/><circle cx="32" cy="46" r="1.1" fill="#FF9466"/><path d="M34 30 C40 33 43 37 45 42" fill="none" stroke="#CFD9CC" stroke-width="1.3" stroke-linecap="round"/><path d="M45 42 L50 36" stroke="#FF9466" stroke-width="1.6" stroke-linecap="round"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Sześć piór, aureola glifów, aura.</div>
+</div>
+</div>
+
+<!-- ============ ANALITYK ============ -->
+<div style="display: flex; gap: 10px; height: 280px">
+<div style="width: 180px; flex-shrink: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 4px 0 0">
+<div style="display: flex; align-items: center; gap: 10px"><svg width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><path d="M6 0.5 L11.5 3.5 V9.5 L6 12.5 L0.5 9.5 V3.5 Z" fill="#B8A0FF"/></svg><span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px">Analityk</span></div>
+<span style="font-size: 12px; line-height: 1.55; color: #AAB9AE">Kryształowy konstrukt, rzutuje wykresy w powietrze.</span>
+<span style="font-size: 11.5px; line-height: 1.55; color: #7E8F83">Ruch: krótkie skoki-teleporty, odłamki orbitują.</span>
+<span style="font-size: 11.5px; color: #7E8F83">Strefa: Rdzeń Analityczny</span>
+</div>
+
+<!-- A · bezczynny -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="26" ry="4" fill="#AAB9AE" opacity="0.15"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; opacity: 0.6; filter: saturate(0.5) brightness(0.85)"><div class="at-drift">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><line x1="32" y1="28" x2="32" y2="55" stroke="#B8A0FF" stroke-width="0.8" opacity="0.6"/><circle cx="32" cy="34" r="2.6" fill="#EEE6FF" opacity="0.5"/><polygon points="17,34 20,31 22,36 19,38" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="45,31 48,34 46,38 43,35" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div></div>
+<svg width="18" height="18" viewBox="0 0 12 12" style="position: absolute; left: 110px; top: 44px" aria-hidden="true"><path d="M7.5 1.2 A5 5 0 1 0 10.8 8.2 A4 4 0 0 1 7.5 1.2 Z" fill="#AAB9AE"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Odłamki przylegają do kryształu, rdzeń tli się.</div>
+</div>
+
+<!-- A · pracuje -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0A0F0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="28" ry="4" fill="#B8A0FF" opacity="0.35"/><path d="M79 66 L100 58 M79 66 L150 58" stroke="#B8A0FF" stroke-opacity="0.35"/><rect x="100" y="18" width="50" height="40" rx="4" fill="#B8A0FF" fill-opacity="0.07" stroke="#B8A0FF" stroke-opacity="0.6"/><g fill="#B8A0FF"><rect class="at-bar" x="106" y="42" width="6" height="12"/><rect class="at-bar" style="animation-delay: .3s" x="116" y="34" width="6" height="20"/><rect class="at-bar" style="animation-delay: .6s" x="126" y="38" width="6" height="16"/><rect class="at-bar" style="animation-delay: .9s" x="136" y="28" width="6" height="26"/></g></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 8px rgba(184,160,255,0.55))"><div class="at-bob">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><line x1="32" y1="28" x2="32" y2="55" stroke="#B8A0FF" stroke-width="0.8" opacity="0.6"/><circle cx="32" cy="34" r="2.6" fill="#EEE6FF"/><polygon points="8,30 12,26 15,33 11,37" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="53,25 57,29 54,36 50,32" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div></div>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Rzutuje wykres; słupki rosną w rytmie 1,6 s.</div>
+</div>
+
+<!-- A · utknął -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #170C0E; border: 1px solid #5A1E26; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #110A0C">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="176" rx="28" ry="4" fill="#FF4D5E" opacity="0.3"/><rect x="104" y="64" width="46" height="34" rx="4" fill="none" stroke="#5E7166" stroke-opacity="0.6"/><path d="M118 74 L136 90 M136 74 L118 90" stroke="#FF4D5E" stroke-width="2" stroke-linecap="round"/></svg>
+<div class="at-glitch" style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(2px 0 0 rgba(255,77,94,0.85)) drop-shadow(-2px 0 0 rgba(123,228,149,0.4))">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><path d="M27 18 L33 30 L29 40" fill="none" stroke="#FF4D5E" stroke-width="1.2"/><circle cx="32" cy="34" r="2.6" fill="#FF4D5E"/><polygon points="11,30 15,26 18,33 14,37" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="50,27 54,31 51,38 47,34" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div>
+<svg class="at-flicker" width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><rect x="40" y="94" width="80" height="4" fill="#FF4D5E" opacity="0.55"/><rect x="48" y="126" width="60" height="3" fill="#FF4D5E" opacity="0.45"/><rect x="36" y="148" width="44" height="3" fill="#7BE495" opacity="0.35"/></svg>
+<svg width="44" height="40" viewBox="0 0 44 40" style="position: absolute; left: 57px; top: 16px; overflow: visible" aria-hidden="true"><circle class="at-ring" cx="22" cy="22" r="16" fill="none" stroke="#FF4D5E" stroke-width="1.5"/><g class="at-blink"><path d="M22 8 L35 32 H9 Z" fill="#2A0710" stroke="#FF4D5E" stroke-width="2.2" stroke-linejoin="round"/><rect x="20.8" y="15" width="2.4" height="9" fill="#FF4D5E"/><rect x="20.8" y="26.5" width="2.4" height="2.6" fill="#FF4D5E"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FF8A96">Rysa w krysztale, wykres zgasł i zamarzł.</div>
+</div>
+
+<!-- A · sukces -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #16110A; border: 1px solid #5A4318; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0F0E0A">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><g class="at-burst" stroke="#FFB547" stroke-width="2.5" stroke-linecap="round"><path d="M79 52 V68 M79 148 V164 M23 108 H39 M119 108 H135 M40 69 L51 80 M107 136 L118 147 M118 69 L107 80 M51 136 L40 147"/></g><circle class="at-ring" cx="79" cy="108" r="46" fill="none" stroke="#FFB547" stroke-width="2"/><ellipse cx="79" cy="176" rx="30" ry="4" fill="#FFB547" opacity="0.35"/><path class="at-flow" d="M100 90 C120 70 128 40 154 8" fill="none" stroke="#FFB547" stroke-width="2.5" stroke-dasharray="4 8" stroke-linecap="round"/><circle cx="128" cy="44" r="3.5" fill="#FFB547"/></svg>
+<div style="position: absolute; left: 23px; top: 52px; width: 112px; height: 112px; filter: drop-shadow(0 0 10px rgba(255,181,71,0.6)) brightness(1.15)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><line x1="32" y1="28" x2="32" y2="55" stroke="#B8A0FF" stroke-width="0.8" opacity="0.6"/><circle cx="32" cy="34" r="3.2" fill="#FFE2A8"/><polygon points="5,28 9,24 12,31 8,35" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="56,23 60,27 57,34 53,30" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 22px" aria-hidden="true"><path d="M6 0.8 L11.2 6 L6 11.2 L0.8 6 Z" fill="#FFB547"/><path d="M3.8 6 L5.4 7.6 L8.4 4.6" fill="none" stroke="#1A1206" stroke-width="1.2"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #FFD08A">Odłamki odskakują, rdzeń rozgrzewa się na złoto.</div>
+</div>
+
+<!-- A · porażka -->
+<div style="width: 160px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #111412; border: 1px solid #2A302C; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 158px; height: 190px; overflow: hidden; background: #0C0F0D">
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="79" cy="178" rx="28" ry="4" fill="#6A716B" opacity="0.3"/><polygon points="40,166 46,160 50,168" fill="#3A3F3A"/><polygon points="112,170 118,164 121,172" fill="#3A3F3A"/></svg>
+<div style="position: absolute; left: 23px; top: 58px; width: 112px; height: 112px; transform: rotate(-12deg); filter: grayscale(1) brightness(0.7)">
+<svg width="112" height="112" viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><path d="M26 14 L34 28 L28 42 L33 52" fill="none" stroke="#070907" stroke-width="1.6"/></svg>
+</div>
+<svg width="158" height="190" viewBox="0 0 158 190" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<g fill="#6A716B"><circle class="at-rise" cx="70" cy="80" r="8" opacity="0.55"/><circle class="at-rise" style="animation-delay: .8s" cx="88" cy="76" r="6" opacity="0.5"/><circle class="at-rise" style="animation-delay: 1.6s" cx="80" cy="70" r="9" opacity="0.4"/></g>
+<g class="at-flicker" stroke="#FFF1C9" stroke-width="2" stroke-linecap="round"><path d="M50 106 L40 100 M46 128 L36 132 M112 122 L122 128 M110 98 L120 90"/></g>
+</svg>
+<svg width="24" height="24" viewBox="0 0 12 12" style="position: absolute; left: 67px; top: 20px" aria-hidden="true"><g class="at-spin-vb"><path d="M9.6 3.4 A4.5 4.5 0 1 0 10.5 6.8" fill="none" stroke="#C4C9C2" stroke-width="1.4" stroke-linecap="round"/><path d="M7.6 1.6 L10.6 2.6 L9.2 5.2 Z" fill="#C4C9C2"/></g></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #C4C9C2">Pęknięcie, odłamki spadają; rdzeń gaśnie.</div>
+</div>
+
+<div style="width: 24px; flex-shrink: 0; display: flex; justify-content: center"><div style="width: 1px; height: 280px; background: #24332B"></div></div>
+
+<!-- A · Forma I -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="24" ry="4" fill="#B8A0FF" opacity="0.25"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><line x1="32" y1="28" x2="32" y2="55" stroke="#B8A0FF" stroke-width="0.8" opacity="0.6"/><circle cx="32" cy="34" r="2.6" fill="#EEE6FF"/><polygon points="11,30 15,26 18,33 14,37" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="50,27 54,31 51,38 47,34" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">Kryształ i dwa odłamki.</div>
+</div>
+<!-- A · Forma II -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #1F2B24; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="28" ry="4" fill="#B8A0FF" opacity="0.35"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; filter: drop-shadow(0 0 6px rgba(184,160,255,0.4))" aria-hidden="true"><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><path d="M24 22 L32 34 L40 22 M32 34 L26 46 M32 34 L38 46" fill="none" stroke="#B8A0FF" stroke-width="0.7" opacity="0.6"/><circle cx="32" cy="34" r="2.8" fill="#EEE6FF"/><polygon points="11,30 15,26 18,33 14,37" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="50,27 54,31 51,38 47,34" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="13,14 17,11 19,17 15,19" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="48,46 52,44 53,50 49,52" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">+ dwa odłamki, wewnętrzna sieć.</div>
+</div>
+<!-- A · Forma III -->
+<div style="width: 140px; height: 280px; box-sizing: border-box; display: flex; flex-direction: column; background: #0F1512; border: 1px solid #4F4380; border-radius: 12px; overflow: hidden">
+<div style="position: relative; width: 138px; height: 190px; background: #0A0F0C">
+<svg width="138" height="190" viewBox="0 0 138 190" style="position: absolute; left: 0; top: 0" aria-hidden="true"><ellipse cx="69" cy="176" rx="34" ry="5" fill="#B8A0FF" opacity="0.45"/></svg>
+<svg width="104" height="104" viewBox="0 0 64 64" style="position: absolute; left: 17px; top: 60px; overflow: visible; filter: drop-shadow(0 0 8px rgba(184,160,255,0.55))" aria-hidden="true"><ellipse cx="32" cy="34" rx="24" ry="13" transform="rotate(-25 32 34)" fill="none" stroke="#B8A0FF" stroke-opacity="0.35"/><polygon points="32,8 43,22 40,46 32,55 24,46 21,22" fill="#2A2442" stroke="#B8A0FF" stroke-width="1.4" stroke-linejoin="round"/><polygon points="32,8 43,22 32,28 21,22" fill="#4E3F7A" opacity="0.85"/><polygon points="32,28 40,46 32,55" fill="#1C1830"/><path d="M24 22 L32 34 L40 22 M32 34 L26 46 M32 34 L38 46" fill="none" stroke="#B8A0FF" stroke-width="0.7" opacity="0.7"/><circle cx="32" cy="34" r="3.2" fill="#EEE6FF"/><polygon points="25,6 27,1 29,6" fill="#B8A0FF"/><polygon points="30,5 32,-1 34,5" fill="#DCD0FF"/><polygon points="35,6 37,1 39,6" fill="#B8A0FF"/><polygon points="11,30 15,26 18,33 14,37" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="50,27 54,31 51,38 47,34" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="13,14 17,11 19,17 15,19" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><polygon points="48,46 52,44 53,50 49,52" fill="#2A2442" stroke="#B8A0FF" stroke-width="1"/><ellipse cx="32" cy="34" rx="30" ry="8" fill="none" stroke="#B8A0FF" stroke-opacity="0.55" stroke-dasharray="3 2"/></svg>
+</div>
+<div style="padding: 10px 12px; font-size: 11.5px; line-height: 1.5; color: #AAB9AE">+ korona, pierścienie orbitalne.</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1600,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

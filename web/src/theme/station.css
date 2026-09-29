@@ -1,0 +1,53 @@
+/* Station scene — values from Main / Tasks / AgentDetail mockups. */
+.station-host { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--c-void); }
+.station-frame { position: relative; flex-shrink: 0; }
+.station { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; }
+.station .layer { position: absolute; left: 0; top: 0; }
+.no-hit { pointer-events: none; }
+
+/* L5 agents: moving between zone, pods and back is a walk, not a jump */
+.agent-sprite {
+  position: absolute; left: 0; top: 0; cursor: pointer;
+  transition: transform 1.2s ease-in-out, width 1.2s ease-in-out, height 1.2s ease-in-out;
+}
+.agent-sprite .creature { transition: width 1.2s ease-in-out, height 1.2s ease-in-out; }
+
+/* L7 name pill under the sprite */
+.name-pill {
+  position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none;
+  display: flex; align-items: center; gap: var(--sp-6); padding: 3px 9px 3px 7px;
+  background: rgba(6, 10, 8, 0.9); border: 1px solid var(--c-line-4); border-radius: var(--r-pill);
+  font-size: var(--fs-label); font-weight: 500; white-space: nowrap; color: var(--c-text);
+}
+.name-pill-level { color: var(--c-text-3); }
+.name-pill.is-working { background: rgba(6, 10, 8, 0.88); border-color: color-mix(in srgb, var(--role) 45%, var(--c-hud)); }
+.name-pill.is-stuck { background: rgba(26, 7, 16, 0.92); border-color: var(--c-red); }
+.name-pill.is-stuck .name-pill-level { color: var(--c-red-soft); }
+.name-pill.is-success { background: rgba(26, 18, 6, 0.92); border-color: var(--c-amber); }
+.name-pill.is-success .name-pill-level { color: var(--c-amber); }
+.name-pill.is-failure { border-color: var(--c-fail); }
+.agent-sprite.is-selected .name-pill { border-color: var(--c-text); }
+
+/* L7 zone labels */
+.zone-label {
+  position: absolute; pointer-events: none;
+  display: flex; align-items: center; gap: var(--sp-8); padding: var(--sp-4) var(--sp-10);
+  background: rgba(6, 10, 8, 0.82); border: 1px solid #2a3a31; border-radius: var(--r-sm);
+}
+.zone-name { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-label); letter-spacing: var(--ls-zone); color: var(--c-text-body); }
+.zone-hint { font-size: var(--fs-caption); color: var(--c-text-3); }
+
+/* dormant modules */
+.dormant-slot { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-8); }
+.dormant-slot span { font-size: var(--fs-caption); letter-spacing: 0.12em; color: #9db0a2; }
+.dormant-slot button {
+  display: flex; align-items: center; gap: var(--sp-6); padding: var(--sp-6) var(--sp-12);
+  background: rgba(6, 10, 8, 0.9); border: 1px dashed #7c9886; border-radius: var(--r-pill);
+  color: var(--c-text-body); font-size: var(--fs-label); font-weight: 600;
+}
+.dormant-slot button:hover { border-style: solid; border-color: var(--c-phosphor-line); }
+
+/* Pods sit 96 px apart: keep a resting agent's label inside its pod; the full name is in the hover title. */
+.name-pill.side-pod { max-width: 90px; }
+.name-pill.side-pod .name-pill-name { overflow: hidden; text-overflow: ellipsis; }
+.name-pill.side-pod .name-pill-level { display: none; }

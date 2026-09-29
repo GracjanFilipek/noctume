@@ -1,0 +1,124 @@
+/*
+ * Agent Tycoon design tokens — values from design/agent-tycoon/VisualSystem.dc.html
+ * (and the exact surface/line colours used across Main, AgentDetail and Tasks).
+ * Colour comes only from light: the base is near-black with a hint of moss.
+ * Amber and red are signals, never decoration.
+ */
+:root {
+  /* --- base: czerń, mech, utleniony metal --- */
+  --c-void: #060907; /* Próżnia — app background */
+  --c-deep: #0d1310; /* Głębia — panel */
+  --c-hull: #18231d; /* Kadłub — station modules */
+  --c-edge: #35483e; /* Krawędź — module outlines */
+  --c-dormant: #5f7a69; /* Uśpiony — dashed construction outlines */
+
+  --c-text: #e8eee4; /* Tekst */
+  --c-text-body: #d7e0d5; /* body copy in lists and dialogs */
+  --c-text-soft: #cfd9cc; /* idle badge text, character strokes */
+  --c-text-2: #aab9ae; /* Tekst 2 */
+  --c-text-3: #7e8f83; /* Tekst 3 — minimum contrast 5.4:1 */
+  --c-text-4: #5e7166; /* empty sockets, disabled */
+
+  /* surfaces */
+  --c-hud: #0a0f0c;
+  --c-panel: var(--c-deep);
+  --c-section: #0f1512;
+  --c-card: #121a16;
+  --c-field: #080c0a;
+  --c-well: #090e0b; /* inset module interior */
+  --c-chip: #18231d;
+
+  /* lines, darkest → lightest */
+  --c-line-1: #1f2b24;
+  --c-line-2: #22302a;
+  --c-line-3: #24332b;
+  --c-line-4: #2f4037;
+  --c-line-5: #25332b;
+
+  /* --- accents: światło interfejsu i ról --- */
+  --c-phosphor: #7be495; /* Fosfor — primary action, data flow, Kapsuły */
+  --c-phosphor-soft: #b5f2c6;
+  --c-phosphor-line: #3b7550;
+  --c-phosphor-bg: #132519;
+  --c-ice: #8fd8ea; /* Lód — Researcher, Obserwatorium */
+  --c-ice-soft: #c4ecf5;
+  --c-ice-line: #3f6e7a;
+  --c-ice-bg: #0f2229;
+  --c-coral: #ff9466; /* Koral — Writer, Kuźnia Słów */
+  --c-amethyst: #b8a0ff; /* Ametyst — Analityk, Rdzeń Analityczny */
+  --c-amethyst-soft: #eee6ff;
+  /* Not in the mockups: colours for the two roles the design did not cover (see CharacterSheet notes). */
+  --c-cobalt: #86a8ff; /* Kobalt — Developer, Warsztat */
+  --c-magnolia: #f2a7d8; /* Magnolia — Recenzent, Wieża Recenzji */
+
+  /* --- signals: zarezerwowane --- */
+  --c-amber: #ffb547; /* Bursztyn — value, premium, success */
+  --c-amber-soft: #ffd08a;
+  --c-amber-line: #8a6420;
+  --c-amber-bg: #1e1708;
+  --c-red: #ff4d5e; /* Czerwień — only error, "utknął", decommission */
+  --c-red-soft: #ff8a96;
+  --c-red-line: #7a2a33;
+  --c-red-bg: #1a0e10;
+  --c-red-badge: #3a0e14;
+  --c-red-ink: #1a0710;
+  --c-fail: #c4c9c2; /* Porażka — grey */
+
+  /* role light (used by badges, sprites, zone labels) */
+  --role-researcher: var(--c-ice);
+  --role-writer: var(--c-coral);
+  --role-analyst: var(--c-amethyst);
+  --role-developer: var(--c-cobalt);
+  --role-reviewer: var(--c-magnolia);
+
+  /* --- typography --- */
+  --font-display: "Chakra Petch", ui-sans-serif, system-ui, sans-serif; /* logo, zones, tabs, names */
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace; /* HUD, panel, prompt, data */
+
+  --fs-sheet: 38px; /* sheet title */
+  --fs-name: 24px; /* creature card name */
+  --fs-card-name: 18px; /* team list name */
+  --fs-hud: 17px; /* HUD readings, logo */
+  --fs-tab: 14px; /* panel tabs */
+  --fs-body: 13px;
+  --fs-body-sm: 12.5px; /* panel body, prompt */
+  --fs-label: 12px; /* map labels */
+  --fs-caption: 11px; /* captions — minimum */
+
+  --ls-logo: 0.16em;
+  --ls-tab: 0.12em;
+  --ls-zone: 0.16em; /* zone names: uppercase, 0.12–0.18em */
+  --ls-heading: 0.18em;
+  --ls-badge: 0.1em;
+
+  /* --- spacing (the mockups use this scale) --- */
+  --sp-2: 2px;
+  --sp-3: 3px;
+  --sp-4: 4px;
+  --sp-6: 6px;
+  --sp-8: 8px;
+  --sp-10: 10px;
+  --sp-12: 12px;
+  --sp-14: 14px;
+  --sp-16: 16px;
+  --sp-18: 18px;
+  --sp-20: 20px;
+  --sp-24: 24px;
+
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+  --r-pill: 999px;
+
+  /* --- layout --- */
+  --hud-h: 60px;
+  --panel-w: 480px;
+
+  /* --- motion: micro 120–200 ms · state loops 1.2–6 s · events 600–900 ms · background 20–120 s --- */
+  --t-micro: 160ms;
+  --t-success: 700ms;
+  --t-fail: 900ms;
+  --ease-drift: ease-in-out;
+  --ease-burst: ease-out;
+}

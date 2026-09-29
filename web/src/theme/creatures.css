@@ -1,0 +1,32 @@
+/* Creature sprites: the state is a class on .creature (CharacterSheet: idle / working / stuck / success / failure). */
+.creature { position: relative; flex-shrink: 0; }
+.creature-fx { position: absolute; overflow: visible; pointer-events: none; }
+.creature-sprite { position: absolute; inset: 0; transition: opacity var(--t-micro), filter var(--t-micro); }
+.creature.st-idle .creature-sprite { opacity: 0.6; filter: saturate(0.5) brightness(0.85); }
+.creature.st-working .creature-sprite { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--role) 55%, transparent)); }
+.creature.st-stuck .creature-sprite { filter: drop-shadow(2px 0 0 rgba(255, 77, 94, 0.85)) drop-shadow(-2px 0 0 rgba(123, 228, 149, 0.4)); }
+.creature.st-success .creature-sprite { filter: drop-shadow(0 0 10px rgba(255, 181, 71, 0.6)) brightness(1.15); }
+.creature.st-failure .creature-sprite { transform: translateY(5.4%) rotate(-12deg); filter: grayscale(1) brightness(0.7); }
+
+/* Avatar circles in the panel crop the sprite; states keep their motion but no effects. */
+.avatar .creature { pointer-events: none; }
+
+/* ---------- dev character sheet (/#arkusz), mirrors CharacterSheet.dc.html ---------- */
+.sheet { width: 1600px; padding: 40px; display: flex; flex-direction: column; gap: 20px; background: #080c0a; min-height: 100vh; }
+.sheet-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.sheet-head h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 38px; letter-spacing: 0.04em; }
+.sheet-head p { margin: 0; max-width: 620px; font-size: 12.5px; line-height: 1.55; color: var(--c-text-3); text-align: right; }
+.sheet-row { display: flex; gap: 10px; height: 200px; }
+.sheet-row.sheet-cols { height: auto; align-items: flex-end; }
+.sheet-rolecol { width: 180px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px 4px 0 0; font-size: 11.5px; color: var(--c-text-3); }
+.sheet-role { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--c-text); }
+.sheet-added { align-self: flex-start; padding: 1px 6px; border: 1px dashed var(--c-dormant); border-radius: 4px; color: var(--c-text-2); }
+.sheet-col { width: 160px; font-family: var(--font-display); font-weight: 600; font-size: 14px; letter-spacing: 0.14em; display: flex; flex-direction: column; gap: 6px; }
+.sheet-col.narrow { width: 140px; }
+.sheet-col span { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: 0; color: var(--c-text-3); }
+.sheet-gap { width: 24px; flex-shrink: 0; display: flex; justify-content: center; }
+.sheet-gap > div { width: 1px; height: 100%; background: var(--c-line-3); }
+.sheet-card { width: 160px; height: 200px; border: 1px solid #1f2b24; border-radius: 12px; overflow: hidden; background: #0f1512; }
+.sheet-card.narrow { width: 140px; }
+.sheet-stage { position: relative; width: 158px; height: 190px; overflow: hidden; background: #0a0f0c; }
+.sheet-stage.narrow { width: 138px; }

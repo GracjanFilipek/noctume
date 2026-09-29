@@ -1,0 +1,22 @@
+{
+  "name": "agent-tycoon",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c cyan,magenta \"npm run dev -w server\" \"npm run dev -w web\"",
+    "typecheck": "tsc -p shared --noEmit && tsc -p server --noEmit && tsc -p web --noEmit",
+    "test": "npm test -w server",
+    "shots:ref": "node scripts/shots.mjs ref",
+    "shots": "node scripts/shots.mjs app"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "playwright-core": "^1.63.0",
+    "typescript": "~5.9.3"
+  }
+}

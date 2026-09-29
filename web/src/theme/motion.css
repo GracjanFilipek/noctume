@@ -1,0 +1,60 @@
+/*
+ * Animation classes and keyframes, verbatim from the design mockups (Main/Tasks/AgentDetail/CharacterSheet).
+ * Rule: every loop on an agent corresponds to exactly one state.
+ */
+.at-drift { animation: atDrift 6s ease-in-out infinite; }
+.at-bob { animation: atBob 2.4s ease-in-out infinite; }
+.at-flow { animation: atFlow 1.2s linear infinite; }
+.at-flow-slow { animation: atFlow 3.6s linear infinite; }
+.at-twinkle { animation: atTwinkle 3.2s ease-in-out infinite; }
+.at-glitch { animation: atGlitch 1.6s steps(1, end) infinite; }
+.at-flicker { animation: atFlicker 1.6s steps(1, end) infinite; }
+.at-blink { animation: atBlink 1s steps(1, end) infinite; }
+.at-spin { animation: atSpin 6s linear infinite; transform-box: fill-box; transform-origin: center; }
+.at-spin-vb { animation: atSpin 1.2s linear infinite; transform-box: view-box; transform-origin: center; }
+.at-beam { animation: atBeam 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 0; }
+.at-pulse { animation: atPulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.at-ring { animation: atRing 1.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.at-burst { animation: atBurst 1.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.at-rise { animation: atRise 2.4s ease-out infinite; }
+.at-write { animation: atWrite 2.4s ease-out infinite; }
+.at-bar { animation: atBar 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.at-hover { animation: atHover 1.4s ease-in-out infinite; }
+.at-reticle { animation: atReticle 2.4s ease-in-out infinite; }
+.at-ship { animation: atShip 48s linear infinite; }
+.at-far { animation: atFar 80s ease-in-out infinite alternate; }
+.at-near { animation: atNear 40s ease-in-out infinite alternate; }
+
+@keyframes atDrift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes atBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes atFlow { to { stroke-dashoffset: -24; } }
+@keyframes atTwinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes atGlitch {
+  0% { transform: translate(0, 0); } 6% { transform: translate(-3px, 1px); } 9% { transform: translate(3px, -1px); }
+  12% { transform: translate(0, 0); } 52% { transform: translate(4px, 0); } 55% { transform: translate(-2px, 1px); }
+  58% { transform: translate(0, 0); }
+}
+@keyframes atFlicker { 0% { opacity: 1; } 6% { opacity: 0.25; } 12% { opacity: 1; } 52% { opacity: 0.4; } 58% { opacity: 1; } }
+@keyframes atBlink { 0% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes atSpin { to { transform: rotate(360deg); } }
+@keyframes atBeam { 0%, 100% { transform: rotate(-9deg); opacity: 0.55; } 50% { transform: rotate(9deg); opacity: 0.95; } }
+@keyframes atPulse { 0%, 100% { opacity: 0.75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes atRing { 0% { transform: scale(0.8); opacity: 0.9; } 100% { transform: scale(1.3); opacity: 0; } }
+@keyframes atBurst { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.35); opacity: 0; } }
+@keyframes atRise { 0% { transform: translateY(0); opacity: 0.8; } 100% { transform: translateY(-26px); opacity: 0; } }
+@keyframes atWrite { 0% { stroke-dashoffset: 32; } 55%, 100% { stroke-dashoffset: 0; } }
+@keyframes atBar { 0%, 100% { transform: scaleY(0.55); } 50% { transform: scaleY(1); } }
+@keyframes atHover { 0%, 100% { transform: translate(0, 0) rotate(-4deg); } 50% { transform: translate(2px, -3px) rotate(3deg); } }
+@keyframes atReticle { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@keyframes atShip { 0% { transform: translateX(1200px); } 100% { transform: translateX(-200px); } }
+@keyframes atFar { from { transform: translateX(0); } to { transform: translateX(-24px); } }
+@keyframes atNear { from { transform: translate(0, 0); } to { transform: translate(-60px, 10px); } }
+
+/* Reduced motion: loops stop; state stays readable through sign, colour and pose. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Not in the mockups: Developer's code blocks type in from the left (same 2.4 s ease-out rhythm as the Writer's glyphs). */
+.at-write-block { animation: atWriteBlock 2.4s ease-out infinite; transform-box: fill-box; transform-origin: 0 50%; }
+@keyframes atWriteBlock { 0% { transform: scaleX(0); } 55%, 100% { transform: scaleX(1); } }

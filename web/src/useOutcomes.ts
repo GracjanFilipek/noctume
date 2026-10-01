@@ -11,6 +11,8 @@ export interface OutcomeEvent {
   kind: Outcome;
   taskId: string;
   agentIds: string[];
+  /** Who delivered: the last worker (author) — the energy stream starts at this agent. */
+  sourceAgentId?: string;
   at: number;
 }
 
@@ -35,7 +37,8 @@ export function useOutcomes(state: GameState | null) {
       const was = before.get(task.id);
       if (was !== "in_progress" && was !== "review") continue;
       if (task.status === "done") {
-        fresh.push({ id: nextId.current++, kind: "success", taskId: task.id, agentIds: task.assigneeIds, at: Date.now() });
+        const author = task.steps.filter((st) => st.kind !== "review").at(-1)?.agentId ?? task.assigneeIds[0];
+        fresh.push({ id: nextId.current++, kind: "success", taskId: task.id, agentIds: task.assigneeIds, sourceAgentId: author, at: Date.now() });
       } else if (task.status === "failed" && task.error !== "Anulowano") {
         fresh.push({ id: nextId.current++, kind: "failure", taskId: task.id, agentIds: task.assigneeIds, at: Date.now() });
       }

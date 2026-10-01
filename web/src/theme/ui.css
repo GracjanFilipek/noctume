@@ -33,7 +33,8 @@ a:hover { color: var(--c-phosphor-soft); }
 .side { width: var(--panel-w); flex-shrink: 0; display: flex; flex-direction: column; background: var(--c-panel); border-left: 1px solid var(--c-line-2); }
 
 .sim-banner {
-  position: absolute; left: var(--sp-16); top: var(--sp-16); z-index: 5;
+  /* top centre: the corners of the stage are expansion slots when the station grows to 12 agents */
+  position: absolute; left: 50%; transform: translateX(-50%); top: var(--sp-12); z-index: 5; white-space: nowrap;
   display: flex; align-items: center; gap: var(--sp-8);
   padding: var(--sp-6) var(--sp-12);
   background: rgba(6, 10, 8, 0.9); border: 1px dashed #8fa597; border-radius: var(--r-sm);

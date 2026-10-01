@@ -4,13 +4,15 @@ import { Creature } from "../creatures/Creature.tsx";
 import { formOf } from "../creatures/types.ts";
 import { currentTask, TASK_DRAG_TYPE, visualStateOf } from "../game.ts";
 import type { Outcome } from "../useOutcomes.ts";
-import { PlusIcon, RoleGlyph, StateSign, SuccessSign, FailureSign } from "../ui/icons.tsx";
+import { PackageIcon, PlusIcon, RoleGlyph, StateSign, SuccessSign, FailureSign } from "../ui/icons.tsx";
+import { setDrag, useDrag, type Drag } from "../dragState.ts";
 import { ZONES } from "../ui/roles.ts";
+import { ROLES } from "@agent-tycoon/shared";
 import { plural } from "../panels/AgentsTab.tsx";
 import { Background } from "./Background.tsx";
 import { Hull, type ConduitState } from "./Hull.tsx";
-import { DORMANT_SLOTS, HANGAR, PODS, STAGE_H, STAGE_W, WORK_MODULES } from "./layout.ts";
-import { placeAgents, type Seats } from "./placement.ts";
+import { HANGAR, PODS, STAGE_H, STAGE_W, WORK_MODULES } from "./layout.ts";
+import { planStation, type StationMemory } from "./placement.ts";
 
 interface Props {
   state: GameState;
@@ -29,7 +31,9 @@ interface Props {
 export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDropTask, onHire }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
-  const seats = useRef<Seats>(new Map());
+  const memory = useRef<StationMemory>({ seats: new Map(), annexes: new Map() });
+  const drag = useDrag();
+  const [hover, setHover] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     const el = host.current!;
@@ -40,21 +44,38 @@ export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDro
     return () => ro.disconnect();
   }, []);
 
-  const placements = useMemo(() => placeAgents(state.agents, seats.current), [state.agents]);
+  const plan = useMemo(() => planStation(state.agents, memory.current), [state.agents]);
+  const { placements, podsOccupied, dormant } = plan;
+  /** VisualSystem: from 7 agents the rest show only their state sign (names on the selected, the stuck and on hover). */
+  const compactNames = state.agents.length >= 7;
   const built = useMemo(() => new Set(state.agents.map((a) => a.role).filter((r) => WORK_MODULES[r].source === "added")), [state.agents]);
   const conduits = useMemo(() => conduitStates(state.agents), [state.agents]);
   const backlog = state.tasks.filter((t) => t.status === "backlog");
-  const packages = backlog.map((t) => leadRole(state, t.assigneeIds));
-  const podsOccupied = placements.filter((p) => p.area.kind === "pods").length;
-  const dormant = DORMANT_SLOTS.filter((s) => !(s.hostFor && built.has(s.hostFor)));
   const selected = placements.find((p) => p.agent.id === selectedAgentId);
+  const target = drag && hover ? placements.find((p) => p.agent.id === hover) : undefined;
+  const dragged = drag ? state.tasks.find((t) => t.id === drag.taskId) : undefined;
+  const endDrag = () => {
+    setHover(null);
+    setDrag(null);
+  };
+  const hangarHint =
+    drag?.source === "hangar" ? `${backlog.length - 1} w doku · 1 w ręku` : `${backlog.length} ${plural(backlog.length, "paczka", "paczki", "paczek")}`;
 
   return (
     <div ref={host} className="station-host">
+      <Background />
       <div className="station-frame" style={{ width: STAGE_W * scale, height: STAGE_H * scale }}>
       <div className="station" style={{ width: STAGE_W, height: STAGE_H, transform: `scale(${scale})` }}>
-        <Background />
-        <Hull conduits={conduits} built={built} podsOccupied={podsOccupied} packages={packages} hangarFlow={backlog.length > 0} />
+        <Hull
+          conduits={conduits}
+          built={built}
+          podsOccupied={podsOccupied}
+          podsII={plan.podsII}
+          annexes={plan.annexes}
+          dormant={dormant}
+          hangarFlow={backlog.length > 0}
+          hangarActive={!!drag}
+        />
 
         {/* L5 agents — sorted by y so lower sprites overlap higher ones */}
         {[...placements]
@@ -66,21 +87,53 @@ export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDro
             return (
               <div
                 key={agent.id}
+                data-agent-id={agent.id}
+                data-stage-x={at.x}
+                data-stage-y={at.y - size / 6}
                 className={`agent-sprite ${agent.id === selectedAgentId ? "is-selected" : ""}`}
                 style={{ transform: `translate(${at.x - size / 2}px, ${at.y - size / 2}px)`, width: size, height: size }}
                 onClick={() => onSelectAgent(agent.id)}
                 onDragOver={(e) => e.dataTransfer.types.includes(TASK_DRAG_TYPE) && e.preventDefault()}
+                onDragEnter={(e) => e.dataTransfer.types.includes(TASK_DRAG_TYPE) && setHover(agent.id)}
+                onDragLeave={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setHover((h) => (h === agent.id ? null : h))}
                 onDrop={(e) => {
                   const taskId = e.dataTransfer.getData(TASK_DRAG_TYPE);
                   if (taskId) onDropTask(taskId, agent.id);
+                  endDrag();
                 }}
                 title={lastStep ? `${agent.name}: ${lastStep}` : agent.name}
               >
                 <Creature role={agent.role} state={vs} form={formOf(agent.level)} size={size} />
-                <NamePill agent={agent} vs={vs} size={size} side={pill} />
+                <NamePill agent={agent} vs={vs} size={size} side={pill} compact={compactNames && agent.id !== selectedAgentId && vs !== "stuck"} />
               </div>
             );
           })}
+
+        {/* packages waiting in the Hangar — lift one and drop it on an agent */}
+        {backlog.slice(0, HANGAR.slots.length).map((task, i) => {
+          const { x, y } = HANGAR.slots[i];
+          const role = leadRole(state, task.assigneeIds);
+          const lifted = drag?.taskId === task.id;
+          return (
+            <div
+              key={task.id}
+              className={`hangar-pkg ${lifted ? "is-lifted" : "at-bob"}`}
+              style={{ left: x - 18, top: y - 18, animationDelay: `${i * 0.5}s` }}
+              draggable
+              title={`${task.title} — przeciągnij na agenta`}
+              onDragStart={(e) => {
+                e.dataTransfer.setData(TASK_DRAG_TYPE, task.id);
+                e.dataTransfer.effectAllowed = "copy";
+                setDrag({ taskId: task.id, role, source: "hangar", slot: i });
+              }}
+              onDragEnd={endDrag}
+            >
+              <PackageIcon role={lifted ? undefined : role} />
+            </div>
+          );
+        })}
+
+        {drag && target && dragged && <DropFeedback drag={drag} target={target} inTeam={dragged.assigneeIds.includes(target.agent.id)} />}
 
         {/* selection reticle + leader line to the panel card (AgentDetail.dc.html) */}
         {selected && (
@@ -95,8 +148,8 @@ export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDro
           .map((r) => (
             <ZoneLabel key={r} at={WORK_MODULES[r].labelAt} icon={<RoleGlyph role={r} />} name={ZONES[r].name} hint={r === "analyst" ? undefined : ZONES[r].hint} />
           ))}
-        <ZoneLabel at={HANGAR.labelAt} icon={<HangarGlyph />} name="HANGAR ZLECEŃ" hint={`${backlog.length} ${plural(backlog.length, "paczka", "paczki", "paczek")}`} />
-        <ZoneLabel at={PODS.labelAt} icon={<StateSign status="idle" size={10} />} name="KAPSUŁY REGENERACJI" hint={`${podsOccupied}/${PODS.centers.length}`} />
+        <ZoneLabel at={HANGAR.labelAt} icon={<HangarGlyph />} name="HANGAR ZLECEŃ" hint={hangarHint} active={!!drag} />
+        <ZoneLabel at={PODS.labelAt} icon={<StateSign status="idle" size={10} />} name="KAPSUŁY REGENERACJI" hint={`${podsOccupied}/${plan.podCapacity}`} />
 
         {/* dormant modules: activation = hiring */}
         {dormant.map(({ id, rect }) => (
@@ -114,10 +167,22 @@ export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDro
   );
 }
 
-function NamePill({ agent, vs, size, side }: { agent: Agent; vs: ReturnType<typeof visualStateOf>; size: number; side: "below" | "right" | "pod" }) {
+function NamePill({
+  agent,
+  vs,
+  size,
+  side,
+  compact,
+}: {
+  agent: Agent;
+  vs: ReturnType<typeof visualStateOf>;
+  size: number;
+  side: "below" | "right" | "pod";
+  compact: boolean;
+}) {
   const style: React.CSSProperties = side === "right" ? { left: size + 6, top: size / 2 - 12, transform: "none" } : { top: size + 4 };
   return (
-    <div className={`name-pill is-${vs} side-${side}`} style={style}>
+    <div className={`name-pill is-${vs} side-${side} ${compact ? "is-compact" : ""}`} style={style}>
       {vs === "success" ? <SuccessSign /> : vs === "failure" ? <FailureSign /> : <StateSign status={agent.status} color={`var(--role-${agent.role})`} />}
       <span className="name-pill-name">{agent.name}</span>
       <span className="name-pill-level">· {agent.level}</span>
@@ -125,9 +190,9 @@ function NamePill({ agent, vs, size, side }: { agent: Agent; vs: ReturnType<type
   );
 }
 
-function ZoneLabel({ at, icon, name, hint }: { at: { x: number; y: number }; icon: React.ReactNode; name: string; hint?: string }) {
+function ZoneLabel({ at, icon, name, hint, active }: { at: { x: number; y: number }; icon: React.ReactNode; name: string; hint?: string; active?: boolean }) {
   return (
-    <div className="zone-label" style={{ left: at.x, top: at.y }}>
+    <div className={`zone-label ${active ? "is-active" : ""}`} style={{ left: at.x, top: at.y }}>
       {icon}
       <span className="zone-name">{name.toUpperCase()}</span>
       {hint && <span className="zone-hint">{hint}</span>}
@@ -153,6 +218,53 @@ function Reticle({ x, y, half }: { x: number; y: number; half: number }) {
     </>
   );
 }
+
+/**
+ * While a package hovers over an agent (Tasks.dc.html): a pulsing drop outline, a beam from where the package
+ * came from, and "Upuść → …". The mockup's "pasuje: <rola>" needs a required role, which tasks don't have.
+ */
+function DropFeedback({ drag, target, inTeam }: { drag: Drag; target: { agent: Agent; at: { x: number; y: number }; size: number }; inTeam: boolean }) {
+  const { x, y } = target.at;
+  const color = drag.role ? `var(--role-${drag.role})` : "#B8A0FF";
+  const from = drag.source === "hangar" && drag.slot !== undefined ? HANGAR.slots[drag.slot] : { x: STAGE_W, y: 405 };
+  const midX = (from.x + x) / 2;
+  const w = target.size + 32;
+  const h = target.size + 44;
+  return (
+    <>
+      <svg className="layer no-hit" width={STAGE_W} height={STAGE_H} viewBox={`0 0 ${STAGE_W} ${STAGE_H}`} aria-hidden="true">
+        <path className="at-flow" d={`M${from.x} ${from.y} C${midX} ${from.y} ${midX} ${y} ${x} ${y}`} fill="none" stroke={color} strokeWidth="2" strokeDasharray="4 8" strokeLinecap="round" opacity="0.8" />
+        <rect className="at-pulse" x={x - w / 2} y={y - h / 2 + 6} width={w} height={h} rx="36" fill="none" stroke="#E8EEE4" strokeWidth="2" strokeDasharray="6 5" />
+      </svg>
+      <div
+        className="drop-hint no-hit"
+        style={{
+          // Near the right edge the hint flips to the left of the target so it never leaves the stage.
+          ...(x + target.size / 2 + HINT_W > STAGE_W ? { right: STAGE_W - (x - target.size / 2 - 12) } : { left: x + target.size / 2 + 12 }),
+          top: y - 24,
+          borderColor: color,
+        }}
+      >
+        {inTeam ? (
+          <span>
+            {target.agent.name} już jest w zespole tej paczki
+          </span>
+        ) : (
+          <>
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M6 1 V9 M2.5 5.5 L6 9 L9.5 5.5" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>Upuść → {target.agent.name} dołącza do zespołu</span>
+            <span style={{ color }}>· {ROLES[target.agent.role].label}</span>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+/** Approximate width of the drop hint, used to keep it on the stage. */
+const HINT_W = 330;
 
 const HangarGlyph = () => (
   <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">

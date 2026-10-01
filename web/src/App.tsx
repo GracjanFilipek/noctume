@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useServer } from "./useServer.ts";
 import { api } from "./api.ts";
 import { useOutcomes } from "./useOutcomes.ts";
+import { EnergyStream } from "./EnergyStream.tsx";
 import { CharacterSheetPreview } from "./creatures/CharacterSheetPreview.tsx";
 import { TopBar } from "./panels/TopBar.tsx";
 import { Panels, type TabId } from "./panels/Panels.tsx";
@@ -10,7 +11,7 @@ import { HireModal } from "./panels/HireModal.tsx";
 
 export function App() {
   const { state, connection } = useServer();
-  const { outcomes } = useOutcomes(state);
+  const { outcomes, events } = useOutcomes(state);
   const [tab, setTab] = useState<TabId>("agents");
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -85,6 +86,7 @@ export function App() {
           />
         </aside>
       </main>
+      <EnergyStream events={events} />
       {hiring && state && <HireModal runner={state.settings.runner} onClose={() => setHiring(false)} act={act} />}
       {error && (
         <div className="toast" role="alert" onClick={() => setError(null)}>

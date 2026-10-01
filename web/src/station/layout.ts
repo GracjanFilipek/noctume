@@ -116,11 +116,62 @@ export const PODS_CONDUIT = "M724 576 C694 560 672 546 646 524";
 export const CORRIDORS = [WORK_MODULES.researcher.conduit, WORK_MODULES.writer.conduit, HANGAR.conduit, PODS_CONDUIT];
 
 /**
- * Dormant slots — construction outlines on the build front ("najwyżej 3 uśpione gniazda na mapie").
- * The side slots host the Developer / Reviewer modules once those roles are hired.
+ * Expansion slots — the station's build front. A slot is either dormant (construction outline, "Aktywuj"),
+ * hosts the Developer/Reviewer module (left/right, once hired), or holds an annex: "the 4th agent of a role
+ * builds an annex next to its zone". Only the first MAX_DORMANT_ON_MAP unused slots are drawn as dormant.
+ * The top/left/right slots and their connectors are from Main.dc.html; topLeft/topRight are added for 12 agents.
  */
-export const DORMANT_SLOTS: { id: string; rect: Rect; connector: string; hostFor?: Role }[] = [
+export interface ExpansionSlot {
+  id: "top" | "left" | "right" | "topLeft" | "topRight";
+  rect: Rect;
+  connector: string;
+  hostFor?: Role;
+}
+
+export const EXPANSION_SLOTS: ExpansionSlot[] = [
   { id: "top", rect: { x: 480, y: 96, w: 160, h: 118 }, connector: "M560 214 V350" },
   { id: "left", rect: { x: 40, y: 370, w: 170, h: 118 }, connector: "M210 430 C300 430 360 436 440 440", hostFor: "developer" },
   { id: "right", rect: { x: 910, y: 370, w: 170, h: 118 }, connector: "M910 430 C820 430 760 436 680 440", hostFor: "reviewer" },
+  { id: "topLeft", rect: { x: 14, y: 30, w: 126, h: 112 }, connector: "M140 86 C160 110 160 150 152 176" },
+  { id: "topRight", rect: { x: 982, y: 30, w: 126, h: 112 }, connector: "M982 86 C962 110 966 150 972 172" },
 ];
+
+/** "Na mapie widać najwyżej 3 uśpione gniazda (najbliższy front budowy)." */
+export const MAX_DORMANT_ON_MAP = 3;
+
+/** Nearest slots first: an annex grows next to its own zone. */
+export const ANNEX_PREFERENCE: Record<Role, ExpansionSlot["id"][]> = {
+  researcher: ["topLeft", "top", "left", "topRight", "right"],
+  writer: ["topRight", "top", "right", "topLeft", "left"],
+  analyst: ["top", "left", "right", "topLeft", "topRight"],
+  developer: ["topLeft", "top", "topRight", "right"],
+  reviewer: ["topRight", "top", "topLeft", "left"],
+};
+
+/** Annex sprites are smaller ("sylwetki czytelne od 48 px"). */
+export const ANNEX_SPRITE = 56;
+
+/** Three bunks in an annex: two below, one above (fits the narrow corner slots). */
+export function annexBunks(r: Rect): Bunk[] {
+  return [
+    { x: r.x + r.w * 0.27, y: r.y + r.h * 0.6 },
+    { x: r.x + r.w * 0.73, y: r.y + r.h * 0.6 },
+    { x: r.x + r.w * 0.5, y: r.y + r.h * 0.3 },
+  ];
+}
+
+/** "Kapsuły Regeneracji rosną o 3 kapsuły": the second bank opens below the core when a 4th agent rests. */
+export const PODS_II = {
+  rect: { x: 440, y: 600, w: 240, h: 140 },
+  rects: [
+    { x: 452, y: 614, w: 66, h: 112 },
+    { x: 527, y: 614, w: 66, h: 112 },
+    { x: 602, y: 614, w: 66, h: 112 },
+  ],
+  centers: [
+    { x: 485, y: 664 },
+    { x: 560, y: 664 },
+    { x: 635, y: 664 },
+  ],
+  conduit: "M560 600 V532",
+};

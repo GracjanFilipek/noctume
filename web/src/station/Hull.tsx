@@ -1,6 +1,5 @@
 import type { Role } from "@agent-tycoon/shared";
-import { PackageIcon } from "../ui/icons.tsx";
-import { CORRIDORS, DORMANT_SLOTS, HANGAR, PODS, PODS_CONDUIT, STAGE_H, STAGE_W, WORK_MODULES } from "./layout.ts";
+import { CORRIDORS, EXPANSION_SLOTS, HANGAR, PODS, PODS_CONDUIT, PODS_II, STAGE_H, STAGE_W, WORK_MODULES, type ExpansionSlot } from "./layout.ts";
 
 export type ConduitState = "flow" | "broken" | "quiet";
 
@@ -17,16 +16,19 @@ interface Props {
   /** Added-role modules that exist (a Developer / Reviewer has been hired). */
   built: Set<Role>;
   podsOccupied: number;
-  /** Lead role of up to 4 packages waiting in the Hangar (undefined = no team yet). */
-  packages: (Role | undefined)[];
+  podsII: boolean;
+  annexes: Map<ExpansionSlot["id"], Role>;
+  dormant: ExpansionSlot[];
   hangarFlow: boolean;
+  /** A package is being dragged: the Hangar lights up (Tasks.dc.html). */
+  hangarActive: boolean;
 }
 
 /** L3 hull (modules, corridors, dormant slots) + L4 data conduits. Module drawings from Main.dc.html. */
-export function Hull({ conduits, built, podsOccupied, packages, hangarFlow }: Props) {
+export function Hull({ conduits, built, podsOccupied, podsII, annexes, dormant, hangarFlow, hangarActive }: Props) {
   const addedCorridors = (["developer", "reviewer"] as Role[]).filter((r) => built.has(r)).map((r) => WORK_MODULES[r].conduit);
-  const allCorridors = [...CORRIDORS, ...addedCorridors];
-  const dormant = DORMANT_SLOTS.filter((s) => !(s.hostFor && built.has(s.hostFor)));
+  const annexSlots = EXPANSION_SLOTS.filter((s) => annexes.has(s.id));
+  const allCorridors = [...CORRIDORS, ...addedCorridors, ...annexSlots.map((s) => s.connector), ...(podsII ? [PODS_II.conduit] : [])];
 
   return (
     <svg className="layer" width={STAGE_W} height={STAGE_H} viewBox={`0 0 ${STAGE_W} ${STAGE_H}`} aria-hidden="true">
@@ -93,8 +95,12 @@ export function Hull({ conduits, built, podsOccupied, packages, hangarFlow }: Pr
       <WordForge jammed={conduits.writer === "broken"} />
       {built.has("developer") && <Workshop />}
       {built.has("reviewer") && <ReviewTower />}
-      <Hangar packages={packages} />
-      <Pods occupied={podsOccupied} />
+      {annexSlots.map((slot) => (
+        <Annex key={slot.id} slot={slot} role={annexes.get(slot.id)!} working={conduits[annexes.get(slot.id)!] === "flow"} />
+      ))}
+      <Hangar active={hangarActive} />
+      <Pods occupied={Math.min(podsOccupied, PODS.rects.length)} />
+      {podsII && <PodsII occupied={podsOccupied - PODS.rects.length} />}
     </svg>
   );
 }
@@ -228,10 +234,12 @@ function WordForge({ jammed }: { jammed: boolean }) {
   );
 }
 
-function Hangar({ packages }: { packages: (Role | undefined)[] }) {
+function Hangar({ active }: { active: boolean }) {
+  const hull = "M100 580 H390 Q410 580 410 600 V730 Q410 750 390 750 H100 L62 716 V614 Z";
   return (
     <g>
-      <path d="M100 580 H390 Q410 580 410 600 V730 Q410 750 390 750 H100 L62 716 V614 Z" fill="#18231D" stroke="#35483E" strokeWidth="2" />
+      {active && <path d={hull} fill="none" stroke="#B5F2C6" strokeOpacity="0.5" strokeWidth="8" filter="url(#mSoft)" />}
+      <path d={hull} fill="#18231D" stroke={active ? "#B5F2C6" : "#35483E"} strokeOpacity={active ? 0.8 : 1} strokeWidth="2" />
       <path d="M112 596 H386 Q394 596 394 604 V726 Q394 734 386 734 H112 L78 708 V622 Z" fill="#090E0B" stroke="#25332B" strokeWidth="1.5" />
       <line className="at-flow-slow" x1="86" y1="626" x2="86" y2="704" stroke="#7BE495" strokeWidth="2" strokeDasharray="3 9" opacity="0.7" />
       <line x1="94" y1="626" x2="94" y2="704" stroke="#7BE495" strokeOpacity="0.25" />
@@ -241,24 +249,16 @@ function Hangar({ packages }: { packages: (Role | undefined)[] }) {
         <rect x="168" y="690" width="4" height="28" />
         <rect x="278" y="690" width="4" height="28" />
       </g>
-      <g fill="#7BE495" opacity="0.5">
-        <circle cx="140" cy="604" r="1.8" />
-        <circle cx="200" cy="604" r="1.8" />
-        <circle cx="260" cy="604" r="1.8" />
-        <circle cx="320" cy="604" r="1.8" />
+      <g fill="#7BE495" opacity={active ? 0.7 : 0.5}>
+        {[140, 200, 260, 320].map((x, i) => (
+          <circle key={x} className={active ? "at-twinkle" : undefined} style={{ animationDelay: `${i * 0.4}s` }} cx={x} cy="604" r={active ? 2 : 1.8} />
+        ))}
       </g>
-      {/* waiting packages on the dock rail (drag & drop comes with stage 5) */}
-      {packages.slice(0, HANGAR.slots.length).map((role, i) => {
-        const { x, y } = HANGAR.slots[i];
-        return (
-          <g key={i} className="at-bob" style={{ animationDelay: `${i * 0.5}s` }}>
-            <ellipse cx={x} cy={688} rx="12" ry="3" fill={role ? ROLE_HEX[role] : "#5F7A69"} opacity="0.3" />
-            <svg x={x - 15} y={y - 15} width="30" height="30" viewBox="0 0 36 36" overflow="visible">
-              <PackageIcon role={role} size={36} />
-            </svg>
-          </g>
-        );
-      })}
+      {active && <path className="at-flow" d="M60 664 C90 664 110 672 150 672" fill="none" stroke="#7BE495" strokeWidth="1.5" strokeDasharray="3 9" opacity="0.8" />}
+      {/* package shadows on the dock rail; the packages themselves are draggable DOM (Station) */}
+      {HANGAR.slots.map(({ x }) => (
+        <ellipse key={x} cx={x} cy={688} rx="12" ry="3" fill="#5F7A69" opacity="0.18" />
+      ))}
       {/* the courier at the dock */}
       <g className="at-bob" style={{ animationDuration: "3.6s" }}>
         <ellipse cx="-4" cy="668" rx="16" ry="6" fill="#7BE495" opacity="0.45" filter="url(#mSoft)" />
@@ -287,6 +287,46 @@ function Pods({ occupied }: { occupied: number }) {
           <g key={i}>
             <rect x={r.x} y={r.y} width={r.w} height={r.h} rx="30" fill="#7BE495" fillOpacity={on ? 0.07 : 0.03} stroke="#7BE495" strokeOpacity={on ? 0.7 : 0.3} strokeWidth="1.5" />
             <ellipse cx={r.x + r.w / 2} cy="700" rx="26" ry="4" fill="#7BE495" opacity={on ? 0.3 : 0.1} />
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
+/* ---------- scaling to 12 agents (VisualSystem §07; drawn in the module language of the mockup) ---------- */
+
+/** "Czwarty agent tej roli dobudowuje aneks obok swojej strefy — stacja rośnie na zewnątrz jak rafa." */
+function Annex({ slot, role, working }: { slot: ExpansionSlot; role: Role; working: boolean }) {
+  const c = ROLE_HEX[role];
+  const r = slot.rect;
+  return (
+    <g>
+      <path d={slot.connector} fill="none" stroke={c} strokeOpacity={working ? 0.9 : 0.35} strokeWidth="2" strokeDasharray="5 7" strokeLinecap="round" className={working ? "at-flow" : undefined} />
+      <rect x={r.x} y={r.y} width={r.w} height={r.h} rx="22" fill="#18231D" stroke="#35483E" strokeWidth="2" />
+      <rect x={r.x + 12} y={r.y + 12} width={r.w - 24} height={r.h - 24} rx="14" fill="#090E0B" stroke="#25332B" strokeWidth="1.5" />
+      <g fill={c} opacity="0.5">
+        <circle cx={r.x + 24} cy={r.y + r.h - 6} r="1.8" />
+        <circle cx={r.x + r.w - 24} cy={r.y + r.h - 6} r="1.8" />
+      </g>
+      <circle className="at-twinkle" cx={r.x + r.w / 2} cy={r.y + 4} r="3" fill={c} />
+    </g>
+  );
+}
+
+/** "Kapsuły Regeneracji rosną o 3 kapsuły." */
+function PodsII({ occupied }: { occupied: number }) {
+  const r = PODS_II.rect;
+  return (
+    <g>
+      <rect x={r.x} y={r.y} width={r.w} height={r.h} rx="24" fill="#18231D" stroke="#35483E" strokeWidth="2" />
+      <rect x={r.x + 8} y={r.y + 8} width={r.w - 16} height={r.h - 16} rx="16" fill="#090E0B" stroke="#25332B" strokeWidth="1.5" />
+      {PODS_II.rects.map((p, i) => {
+        const on = i < occupied;
+        return (
+          <g key={i}>
+            <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="28" fill="#7BE495" fillOpacity={on ? 0.07 : 0.03} stroke="#7BE495" strokeOpacity={on ? 0.7 : 0.3} strokeWidth="1.5" />
+            <ellipse cx={p.x + p.w / 2} cy={p.y + p.h - 8} rx="22" ry="3.5" fill="#7BE495" opacity={on ? 0.3 : 0.1} />
           </g>
         );
       })}

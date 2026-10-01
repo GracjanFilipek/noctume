@@ -51,3 +51,52 @@
 .name-pill.side-pod { max-width: 90px; }
 .name-pill.side-pod .name-pill-name { overflow: hidden; text-overflow: ellipsis; }
 .name-pill.side-pod .name-pill-level { display: none; }
+.station-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------- stage 5: packages & drag feedback (Tasks.dc.html) ---------- */
+.hangar-pkg { position: absolute; width: 36px; height: 36px; cursor: grab; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--c-phosphor) 25%, transparent)); }
+.hangar-pkg:hover { filter: drop-shadow(0 0 10px rgba(184, 160, 255, 0.6)); }
+.hangar-pkg.is-lifted { opacity: 0.6; cursor: grabbing; }
+.zone-label.is-active { padding: 5px 12px; background: rgba(6, 10, 8, 0.92); border-color: var(--c-phosphor-soft); }
+.zone-label.is-active .zone-name { color: var(--c-text); }
+.zone-label.is-active .zone-hint { color: var(--c-text-2); }
+.drop-hint {
+  position: absolute; display: flex; align-items: center; gap: var(--sp-8); padding: 5px var(--sp-10);
+  background: rgba(6, 10, 8, 0.94); border: 1px solid #b8a0ff; border-radius: var(--r-md);
+  font-size: var(--fs-label); white-space: nowrap; color: var(--c-text); z-index: 30;
+}
+
+/* success energy stream (Tasks.dc.html: amber flow from the agent to the counter, "+N" pill) */
+.energy-layer { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+.energy-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.energy-trail { opacity: 0; animation: atFlow 1.2s linear infinite, energyTrail 2.9s ease-out forwards; }
+.energy-orb {
+  position: absolute; left: 0; top: 0; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
+  background: var(--c-amber); box-shadow: 0 0 12px 3px rgba(255, 181, 71, 0.7);
+  offset-distance: 0%; offset-rotate: 0deg; opacity: 0;
+  animation-name: energyFly; animation-timing-function: ease-out; animation-fill-mode: forwards;
+}
+.energy-plus {
+  position: absolute; padding: 3px 10px; border-radius: var(--r-pill);
+  background: #2a1e08; border: 1px solid var(--c-amber); color: var(--c-amber);
+  font-size: var(--fs-body); font-weight: 600; box-shadow: 0 0 14px rgba(255, 181, 71, 0.45);
+  opacity: 0; animation: energyPlus 1.3s ease-out forwards;
+}
+@keyframes energyFly { 0% { offset-distance: 0%; opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes energyTrail { 0% { opacity: 0; } 15% { opacity: 0.9; } 60% { opacity: 0.9; } 100% { opacity: 0; } }
+@keyframes energyPlus { 0% { opacity: 0; transform: translateY(4px); } 15% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ---------- stage 6: 12 agents ---------- */
+/* From 7 agents a pill shrinks to its state sign; the name comes back on hover. */
+.name-pill.is-compact { padding: 3px 5px; gap: 0; }
+.name-pill.is-compact .name-pill-name,
+.name-pill.is-compact .name-pill-level { display: none; }
+.agent-sprite:hover .name-pill.is-compact { padding: 3px 9px 3px 7px; gap: var(--sp-6); z-index: 5; }
+.agent-sprite:hover .name-pill.is-compact .name-pill-name { display: inline; }
+.agent-sprite:hover { z-index: 4; }
+
+/* Reduced motion: no flight — the counter just shows "+1"; the state stays readable by sign, colour and pose. */
+@media (prefers-reduced-motion: reduce) {
+  .energy-orb, .energy-trail { display: none; }
+  .energy-plus { opacity: 1; }
+}

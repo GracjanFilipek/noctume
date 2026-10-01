@@ -4,6 +4,7 @@ import { api } from "../api.ts";
 import { agentById, agentLabel, TASK_DRAG_TYPE, taskProgress } from "../game.ts";
 import { ChevronDown, DragHandle, PackageIcon, PlusIcon, RoleGlyph, SuccessSign } from "../ui/icons.tsx";
 import { EventLog } from "./EventLog.tsx";
+import { setDrag } from "../dragState.ts";
 import { Files } from "./Files.tsx";
 import { TeamPicker } from "./TeamPicker.tsx";
 import { plural } from "./AgentsTab.tsx";
@@ -150,9 +151,14 @@ function PackageCard({
       draggable={editable}
       onDragStart={(e) => {
         e.dataTransfer.setData(TASK_DRAG_TYPE, task.id);
+        e.dataTransfer.effectAllowed = "copy";
         onDrag(true);
+        setDrag({ taskId: task.id, role: lead?.role, source: "panel" });
       }}
-      onDragEnd={() => onDrag(false)}
+      onDragEnd={() => {
+        onDrag(false);
+        setDrag(null);
+      }}
     >
       {editable && <DragHandle color={dragging ? "var(--role, #B8A0FF)" : "#5E7166"} />}
       <button type="button" className="package-main" onClick={onOpen} aria-expanded={open}>

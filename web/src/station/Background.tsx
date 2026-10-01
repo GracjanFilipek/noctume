@@ -8,7 +8,8 @@ import { STAGE_H, STAGE_W } from "./layout.ts";
  */
 export const Background = memo(function Background() {
   return (
-    <svg className="layer" width={STAGE_W} height={STAGE_H} viewBox={`0 0 ${STAGE_W} ${STAGE_H}`} aria-hidden="true">
+    // Full-bleed: "slice" fills the whole scene area (no letterbox bars); the hull above is fitted separately.
+    <svg className="station-backdrop" viewBox={`0 0 ${STAGE_W} ${STAGE_H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
         <radialGradient id="mSpace" cx="0.62" cy="0.28" r="0.85">
           <stop offset="0" stopColor="#13261C" />

@@ -3,7 +3,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-export const WORKSPACES_DIR = path.join(ROOT_DIR, "workspaces");
+/**
+ * Where NOCTUA keeps its data (state + task workspaces). The repo root when run from source;
+ * the desktop app sets NOCTUA_HOME to its per-user data folder before loading the server.
+ */
+export const NOCTUA_HOME = process.env.NOCTUA_HOME ?? ROOT_DIR;
+export const WORKSPACES_DIR = path.join(NOCTUA_HOME, "workspaces");
 
 export function workspaceDir(taskId: string) {
   return path.join(WORKSPACES_DIR, taskId);

@@ -98,6 +98,8 @@ export interface Settings {
 export interface Capabilities {
   pdf: boolean;
   docx: boolean;
+  /** Claude Code CLI found (needed for the Claude mode). */
+  claude: boolean;
 }
 
 export interface GameState {

@@ -3,13 +3,13 @@ import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { FORMATS, ROLES, SAFE_TOOLS, TIERS, type Agent, type Capabilities, type GameState, type RunnerKind, type Task } from "@agent-tycoon/shared";
 import { initialState, type Store } from "./store.ts";
-import { ROOT_DIR } from "./workspace.ts";
+import { NOCTUA_HOME } from "./workspace.ts";
 
-export const DATA_DIR = path.join(ROOT_DIR, "data");
+export const DATA_DIR = path.join(NOCTUA_HOME, "data");
 export const STATE_FILE = path.join(DATA_DIR, "state.json");
 const SAVE_DELAY_MS = 300;
 
-export const INTERRUPTED = "Przerwane — serwer został zrestartowany w trakcie pracy.";
+export const INTERRUPTED = "Przerwane — NOCTUA została zamknięta lub zrestartowana w trakcie pracy.";
 
 /**
  * Loads the saved state (or starts fresh). Capabilities are always re-detected; the runner comes from the file
@@ -37,7 +37,7 @@ export async function loadState(capabilities: Capabilities, runnerOverride?: Run
  * Saves after every change (debounced), one write at a time, atomically (temp file + rename),
  * and synchronously on shutdown so the last change survives a restart.
  */
-export function persist(store: Store) {
+export function persist(store: Store, { handleSignals = true }: { handleSignals?: boolean } = {}) {
   let timer: NodeJS.Timeout | undefined;
   let writing = false;
   let again = false;
@@ -82,11 +82,14 @@ export function persist(store: Store) {
       console.error("[stan] Zapis przy zamykaniu nie powiódł się:", err);
     }
   };
-  for (const signal of ["SIGINT", "SIGTERM"] as const) {
-    process.once(signal, () => {
-      flush();
-      process.exit(0);
-    });
+  // Standalone server: save on Ctrl+C / tsx restarts. The desktop app calls flush() itself on quit.
+  if (handleSignals) {
+    for (const signal of ["SIGINT", "SIGTERM"] as const) {
+      process.once(signal, () => {
+        flush();
+        process.exit(0);
+      });
+    }
   }
   return { flush };
 }

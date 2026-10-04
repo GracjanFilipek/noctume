@@ -124,12 +124,26 @@ function describeFailure(result: StreamResult): string {
   return result.text || `Błąd wykonania (${result.subtype}).`;
 }
 
-/** `claude` from CLAUDE_BIN, else PATH, else the default native-install location. */
-function claudeBin(): string {
+/**
+ * `claude` from CLAUDE_BIN, else PATH, else the usual install locations. An app started from the Dock does not
+ * get the terminal's PATH, so the native installer, Homebrew and global npm folders are checked explicitly.
+ */
+export function claudeBin(): string {
   if (process.env.CLAUDE_BIN) return process.env.CLAUDE_BIN;
-  const local = path.join(homedir(), ".local", "bin", "claude");
-  const onPath = (process.env.PATH ?? "").split(path.delimiter).some((dir) => existsSync(path.join(dir, "claude")));
-  return onPath || !existsSync(local) ? "claude" : local;
+  const home = homedir();
+  const dirs = [
+    ...(process.env.PATH ?? "").split(path.delimiter).filter(Boolean),
+    path.join(home, ".local", "bin"),
+    path.join(home, ".claude", "local"),
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    path.join(home, ".npm-global", "bin"),
+  ];
+  for (const dir of dirs) {
+    const candidate = path.join(dir, "claude");
+    if (existsSync(candidate)) return candidate;
+  }
+  return "claude";
 }
 
 /** Subscription only: never let an API key in the environment switch the agent to API billing. */

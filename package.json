@@ -5,14 +5,18 @@
   "workspaces": [
     "shared",
     "server",
-    "web"
+    "web",
+    "desktop"
   ],
   "scripts": {
     "dev": "concurrently -k -n server,web -c cyan,magenta \"npm run dev -w server\" \"npm run dev -w web\"",
-    "typecheck": "tsc -p shared --noEmit && tsc -p server --noEmit && tsc -p web --noEmit",
+    "typecheck": "tsc -p shared --noEmit && tsc -p server --noEmit && tsc -p web --noEmit && tsc -p desktop --noEmit",
     "test": "npm test -w server",
     "shots:ref": "node scripts/shots.mjs ref",
-    "shots": "node scripts/shots.mjs app"
+    "shots": "node scripts/shots.mjs app",
+    "desktop": "npm run start -w @agent-tycoon/desktop",
+    "desktop:pack": "npm run pack -w @agent-tycoon/desktop",
+    "desktop:dmg": "npm run dist -w @agent-tycoon/desktop"
   },
   "devDependencies": {
     "concurrently": "^10.0.5",

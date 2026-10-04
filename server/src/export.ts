@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Capabilities, OutputFormat } from "@agent-tycoon/shared";
+import { claudeBin } from "./runners/ClaudeCliRunner.ts";
 
 const CHROME_CANDIDATES = [
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
@@ -21,7 +22,8 @@ function chromeBin(): string | undefined {
 }
 
 export function detectCapabilities(): Capabilities {
-  return { pdf: !!chromeBin(), docx: existsSync(TEXTUTIL) };
+  const claude = claudeBin();
+  return { pdf: !!chromeBin(), docx: existsSync(TEXTUTIL), claude: claude !== "claude" && existsSync(claude) };
 }
 
 /**

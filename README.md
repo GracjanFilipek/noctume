@@ -19,10 +19,11 @@ Całość jest pokazana jako stacja na skraju mgławicy: agenci przechodzą do s
 7. [Bezpieczeństwo](#bezpieczeństwo)
 8. [Koszty i limity](#koszty-i-limity)
 9. [Zapis stanu](#zapis-stanu)
-10. [Konfiguracja (zmienne środowiskowe)](#konfiguracja-zmienne-środowiskowe)
-11. [Gdy coś nie działa](#gdy-coś-nie-działa)
-12. [Ograniczenia i znane problemy](#ograniczenia-i-znane-problemy)
-13. [Dla deweloperów](#dla-deweloperów)
+10. [Aplikacja na Maca](#aplikacja-na-maca)
+11. [Konfiguracja (zmienne środowiskowe)](#konfiguracja-zmienne-środowiskowe)
+12. [Gdy coś nie działa](#gdy-coś-nie-działa)
+13. [Ograniczenia i znane problemy](#ograniczenia-i-znane-problemy)
+14. [Dla deweloperów](#dla-deweloperów)
 
 ---
 
@@ -309,6 +310,38 @@ Uszkodzony plik stanu jest odkładany jako `data/state.corrupt-<czas>.json`, a s
 
 ---
 
+## Aplikacja na Maca
+
+NOCTUA może działać jako zwykła aplikacja (Electron) — bez terminala i bez `npm run dev`. Serwer startuje razem z oknem, a zamknięcie okna kończy pracę.
+
+### Uruchomienie z kodu
+
+```bash
+npm run desktop
+```
+
+Buduje interfejs i serwer, potem otwiera okno **Noctua**.
+
+### Zbudowanie aplikacji `.app`
+
+```bash
+npm run desktop:pack
+```
+
+Gotowa aplikacja: `desktop/release/mac-arm64/Noctua.app` — przeciągnij ją do **Aplikacji**. (`npm run desktop:dmg` zbuduje instalator `.dmg`.)
+
+### Co warto wiedzieć
+
+- **Wymagania są te same:** Claude Code zainstalowany i zalogowany subskrypcją ([Krok 3–4](#krok-3-claude-code-cli)). Aplikacja sama wczytuje `PATH` z Twojej powłoki i sprawdza typowe lokalizacje, więc znajdzie `claude` także po uruchomieniu z Docka. Jeśli go nie znajdzie, nie pozwoli włączyć trybu Claude i powie dlaczego.
+- **Dane aplikacji** leżą w `~/Library/Application Support/Noctua` (`data/state.json` i `workspaces/`) — osobno od danych wersji z `npm run dev`.
+- **Pierwsze zadanie w trybie Claude:** macOS może zapytać, czy *Noctua* może użyć danych logowania Claude Code z pęku kluczy — kliknij **Zawsze pozwalaj**.
+- **Aplikacja nie jest podpisana** ani notaryzowana przez Apple. Przy pierwszym uruchomieniu kliknij ją prawym przyciskiem → **Otwórz** (albo zezwól w *Ustawienia systemowe → Prywatność i ochrona*). Do rozsyłania innym potrzebny byłby certyfikat Apple Developer.
+- **Zamknięcie aplikacji przerywa trwające zadania** (procesy `claude` są zatrzymywane, a zadania oznaczane jako przerwane — można je uruchomić ponownie). Stan zapisuje się przy każdej zmianie i przy zamykaniu.
+- **Rozmiar:** ok. 290 MB (Electron zawiera własną przeglądarkę). Ikona: `desktop/build/icon.png` (1024 × 1024, z przezroczystymi rogami) — `electron-builder` robi z niej `icon.icns`.
+- Czcionki (Chakra Petch, IBM Plex Mono) ładują się z Google Fonts — bez internetu interfejs użyje czcionek zastępczych.
+
+---
+
 ## Konfiguracja (zmienne środowiskowe)
 
 | Zmienna | Domyślnie | Opis |
@@ -317,7 +350,8 @@ Uszkodzony plik stanu jest odkładany jako `data/state.corrupt-<czas>.json`, a s
 | `CLAUDE_BIN` | `claude` z `PATH` albo `~/.local/bin/claude` | ścieżka do Claude Code CLI |
 | `CHROME_BIN` | Chrome / Chromium / Edge / Brave w `/Applications` | przeglądarka do eksportu PDF |
 | `TASK_TIMEOUT_MS` | `600000` (10 min) | maks. czas jednego kroku agenta |
-| `PORT` | `3001` | port serwera API — **uwaga:** interfejs (`web/vite.config.ts`) ma ten port wpisany na sztywno w proxy |
+| `PORT` | `3001` | port serwera API w trybie `npm run dev` — **uwaga:** interfejs (`web/vite.config.ts`) ma ten port wpisany na sztywno w proxy; aplikacja na Maca wybiera wolny port sama |
+| `NOCTUA_HOME` | katalog repo (`npm run dev`) / `~/Library/Application Support/Noctua` (aplikacja) | gdzie trzymać `data/` i `workspaces/` |
 
 Przykład: `RUNNER=claude TASK_TIMEOUT_MS=900000 npm run dev`
 
@@ -356,7 +390,7 @@ Przykład: `RUNNER=claude TASK_TIMEOUT_MS=900000 npm run dev`
 
 ```
 shared/   wspólne typy i katalogi (role, narzędzia, formaty)
-server/   Fastify + WebSocket
+server/   Fastify + WebSocket (src/app.ts: startServer — używany przez dev i aplikację)
   src/runners/      MockRunner, ClaudeCliRunner (+ parser stream-json)
   src/pipeline.ts   praca zespołu: kolejni wykonawcy → recenzja → poprawki → eksport
   src/taskQueue.ts  kolejka i limit równoległości
@@ -364,6 +398,7 @@ server/   Fastify + WebSocket
   src/export.ts     HTML → PDF / DOCX
   src/persistence.ts zapis i odtwarzanie stanu
   scripts/securityCheck.ts  test piaskownicy na prawdziwym CLI
+desktop/  aplikacja Electron: proces główny (src/main.ts) i build (build.mjs)
 web/      Vite + React
   src/station/      scena stacji (warstwy SVG + DOM, rozmieszczenie agentów)
   src/creatures/    postacie SVG: 5 ról × 5 stanów × 3 formy
@@ -377,6 +412,8 @@ scripts/shots.mjs     zrzuty ekranu do porównań z makietami
 
 ```bash
 npm run dev                               # serwer + interfejs
+npm run desktop                           # aplikacja Electron z kodu
+npm run desktop:pack                      # Noctua.app → desktop/release/
 npm run typecheck                         # TypeScript we wszystkich pakietach
 npm test                                  # testy serwera (parser strumienia, zapis stanu)
 npm run check:security -w server -- --hard  # test piaskownicy na prawdziwym Claude Code

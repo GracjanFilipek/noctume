@@ -4,7 +4,7 @@ import type { Agent, GameState, Task } from "@agent-tycoon/shared";
 import { INTERRUPTED, normalize, recoverInterrupted } from "../src/persistence.ts";
 import { initialState } from "../src/store.ts";
 
-const fresh = () => initialState("mock", { pdf: true, docx: true });
+const fresh = () => initialState("mock", { pdf: true, docx: true, claude: true });
 
 const agent = (id: string, status: Agent["status"] = "idle"): Agent => ({
   id,
@@ -65,7 +65,7 @@ test("normalize keeps valid data, fills defaults and drops broken entries", () =
   assert.deepEqual(s.tasks[0].assigneeIds, ["a"], "unknown agents leave the team");
   assert.equal(s.tasks[0].status, "backlog");
   assert.equal(s.tasks.length, 1);
-  assert.deepEqual(s.capabilities, { pdf: true, docx: true }, "capabilities are re-detected, not loaded");
+  assert.deepEqual(s.capabilities, { pdf: true, docx: true, claude: true }, "capabilities are re-detected, not loaded");
 });
 
 test("garbage in, fresh state out", () => {

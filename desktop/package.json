@@ -1,0 +1,40 @@
+{
+  "name": "@agent-tycoon/desktop",
+  "productName": "Noctua",
+  "version": "0.1.0",
+  "description": "NOCTUA \u2014 lokalne narz\u0119dzie do zarz\u0105dzania zespo\u0142em agent\u00f3w Claude Code",
+  "author": "Gracjan Filipek",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.mjs",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node build.mjs && electron .",
+    "pack": "node build.mjs && electron-builder --mac dir",
+    "dist": "node build.mjs && electron-builder --mac dmg"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "electron": "44.5.1",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2"
+  },
+  "build": {
+    "appId": "com.gracjanfilipek.noctua",
+    "productName": "Noctua",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "identity": null,
+      "icon": "build/icon.png"
+    },
+    "electronVersion": "44.5.1"
+  }
+}

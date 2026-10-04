@@ -27,6 +27,10 @@ export function TopBar({ state, connection, act }: Props) {
 
   const setRunner = (runner: RunnerKind) => {
     if (runner === settings?.runner) return;
+    if (runner === "claude" && state && !state.capabilities.claude) {
+      alert("Nie znaleziono Claude Code na tym komputerze. Zainstaluj go i zaloguj się (claude auth login) — instrukcja w README, krok 3–4.");
+      return;
+    }
     if (runner === "claude" && !confirm("Tryb Claude uruchamia prawdziwe wywołania `claude -p` i zużywa limity subskrypcji. Włączyć?")) return;
     act(() => api("PATCH", "/settings", { runner }));
   };

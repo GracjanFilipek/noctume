@@ -76,6 +76,14 @@ export class TaskQueue {
     this.pump();
   }
 
+  /** Stops every running task (app shutdown): their claude processes get killed. */
+  cancelAll() {
+    for (const entry of this.running.values()) {
+      entry.cancelled = true;
+      if (entry.runId) entry.runner.cancel(entry.runId);
+    }
+  }
+
   cancel(taskId: string) {
     const task = this.store.task(taskId);
     if (task.status === "queued") {

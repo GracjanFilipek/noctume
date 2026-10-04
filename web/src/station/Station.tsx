@@ -1,7 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Agent, GameState, Role } from "@agent-tycoon/shared";
 import { Creature } from "../creatures/Creature.tsx";
-import { formOf } from "../creatures/types.ts";
 import { currentTask, TASK_DRAG_TYPE, visualStateOf } from "../game.ts";
 import type { Outcome } from "../useOutcomes.ts";
 import { PackageIcon, PlusIcon, RoleGlyph, StateSign, SuccessSign, FailureSign } from "../ui/icons.tsx";
@@ -103,7 +102,7 @@ export function Station({ state, outcomes, selectedAgentId, onSelectAgent, onDro
                 }}
                 title={lastStep ? `${agent.name}: ${lastStep}` : agent.name}
               >
-                <Creature role={agent.role} state={vs} form={formOf(agent.level)} size={size} />
+                <Creature role={agent.role} state={vs} size={size} />
                 <NamePill agent={agent} vs={vs} size={size} side={pill} compact={compactNames && agent.id !== selectedAgentId && vs !== "stuck"} />
               </div>
             );
@@ -185,7 +184,6 @@ function NamePill({
     <div className={`name-pill is-${vs} side-${side} ${compact ? "is-compact" : ""}`} style={style}>
       {vs === "success" ? <SuccessSign /> : vs === "failure" ? <FailureSign /> : <StateSign status={agent.status} color={`var(--role-${agent.role})`} />}
       <span className="name-pill-name">{agent.name}</span>
-      <span className="name-pill-level">· {agent.level}</span>
     </div>
   );
 }

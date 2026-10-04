@@ -1,7 +1,7 @@
 import type { GameState, RunnerKind } from "@agent-tycoon/shared";
 import type { Connection } from "../useServer.ts";
 import { api } from "../api.ts";
-import { ActiveIcon, ChevronDown, ChevronUp, ClaudeIcon, ConnectionIcon, CostIcon, LogoIcon, MockIcon } from "../ui/icons.tsx";
+import { ActiveIcon, ChevronDown, ChevronUp, ClaudeIcon, ConnectionIcon, CostIcon, MockIcon } from "../ui/icons.tsx";
 
 const CONNECTION: Record<Connection, { label: string; color: string }> = {
   connecting: { label: "łączenie…", color: "#7E8F83" },
@@ -35,7 +35,6 @@ export function TopBar({ state, connection, act }: Props) {
   return (
     <header className="hud">
       <div className="hud-logo">
-        <LogoIcon />
         <span>NOCTUA</span>
       </div>
 

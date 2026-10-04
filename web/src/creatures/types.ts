@@ -2,12 +2,8 @@ import type { ReactNode } from "react";
 
 /** Base states come from the server; success/failure are short events after a task ends. */
 export type VisualState = "idle" | "working" | "stuck" | "success" | "failure";
-/** Evolution: Forma I (level 1–2), II (3–4), III (5+). */
+/** Drawing variants from the CharacterSheet (more parts, more light). The app uses variant I; II/III exist for the sheet. */
 export type Form = 1 | 2 | 3;
-
-export function formOf(level: number): Form {
-  return level >= 5 ? 3 : level >= 3 ? 2 : 1;
-}
 
 /**
  * One role's drawing. `body` is on the 64×64 sprite grid.

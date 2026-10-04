@@ -16,9 +16,9 @@ const STATES: { id: VisualState; label: string; card: string; border: string; st
   { id: "failure", label: "PORAŻKA", card: "#111412", border: "#2A302C", stage: "#0C0F0D" },
 ];
 const FORMS: { form: Form; label: string; levels: string }[] = [
-  { form: 1, label: "FORMA I", levels: "poziom 1–2" },
-  { form: 2, label: "FORMA II", levels: "poziom 3–4" },
-  { form: 3, label: "FORMA III", levels: "poziom 5+" },
+  { form: 1, label: "WARIANT I", levels: "używany w aplikacji" },
+  { form: 2, label: "WARIANT II", levels: "z arkusza makiety" },
+  { form: 3, label: "WARIANT III", levels: "z arkusza makiety" },
 ];
 const ADDED: Role[] = ["developer", "reviewer"];
 

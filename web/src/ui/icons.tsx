@@ -6,14 +6,6 @@ import type { AgentStatus, Role } from "@agent-tycoon/shared";
 
 type P = { size?: number; color?: string };
 
-export const LogoIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-    <circle cx="14" cy="15" r="9" fill="none" stroke="#7BE495" strokeWidth="2" />
-    <circle cx="14" cy="15" r="3.2" fill="#FF9466" />
-    <path d="M14 6 V2 M7.5 8.5 L5 5.5 M20.5 8.5 L23 5.5" stroke="#B8A0FF" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-
 export const CostIcon = () => (
   <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
     <path d="M3.5 15 A7.5 7.5 0 0 1 18.5 15" fill="none" stroke="#2F4037" strokeWidth="2.2" strokeLinecap="round" />

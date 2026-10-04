@@ -19,12 +19,9 @@
   background: rgba(6, 10, 8, 0.9); border: 1px solid var(--c-line-4); border-radius: var(--r-pill);
   font-size: var(--fs-label); font-weight: 500; white-space: nowrap; color: var(--c-text);
 }
-.name-pill-level { color: var(--c-text-3); }
 .name-pill.is-working { background: rgba(6, 10, 8, 0.88); border-color: color-mix(in srgb, var(--role) 45%, var(--c-hud)); }
 .name-pill.is-stuck { background: rgba(26, 7, 16, 0.92); border-color: var(--c-red); }
-.name-pill.is-stuck .name-pill-level { color: var(--c-red-soft); }
 .name-pill.is-success { background: rgba(26, 18, 6, 0.92); border-color: var(--c-amber); }
-.name-pill.is-success .name-pill-level { color: var(--c-amber); }
 .name-pill.is-failure { border-color: var(--c-fail); }
 .agent-sprite.is-selected .name-pill { border-color: var(--c-text); }
 
@@ -50,7 +47,6 @@
 /* Pods sit 96 px apart: keep a resting agent's label inside its pod; the full name is in the hover title. */
 .name-pill.side-pod { max-width: 90px; }
 .name-pill.side-pod .name-pill-name { overflow: hidden; text-overflow: ellipsis; }
-.name-pill.side-pod .name-pill-level { display: none; }
 .station-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 /* ---------- stage 5: packages & drag feedback (Tasks.dc.html) ---------- */
@@ -89,8 +85,7 @@
 /* ---------- stage 6: 12 agents ---------- */
 /* From 7 agents a pill shrinks to its state sign; the name comes back on hover. */
 .name-pill.is-compact { padding: 3px 5px; gap: 0; }
-.name-pill.is-compact .name-pill-name,
-.name-pill.is-compact .name-pill-level { display: none; }
+.name-pill.is-compact .name-pill-name { display: none; }
 .agent-sprite:hover .name-pill.is-compact { padding: 3px 9px 3px 7px; gap: var(--sp-6); z-index: 5; }
 .agent-sprite:hover .name-pill.is-compact .name-pill-name { display: inline; }
 .agent-sprite:hover { z-index: 4; }

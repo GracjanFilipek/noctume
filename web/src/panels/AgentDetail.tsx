@@ -3,7 +3,6 @@ import { PREMIUM_TOOLS, ROLES, SAFE_TOOLS, TIERS, type Agent, type GameState } f
 import { api } from "../api.ts";
 import { bunkOf, currentTask, stuckTask, taskProgress, visualStateOf } from "../game.ts";
 import { Creature } from "../creatures/Creature.tsx";
-import { formOf } from "../creatures/types.ts";
 import type { Outcome } from "../useOutcomes.ts";
 import { BackIcon, FailedBox, LessonIcon, PackageIcon, PendingDot, PowerIcon, PremiumWarning, ReviveIcon, RoleGlyph, SkillIcon, SuccessSign } from "../ui/icons.tsx";
 import { BUNKS_PER_MODULE, roleVar, ZONES } from "../ui/roles.ts";
@@ -49,7 +48,7 @@ export function AgentDetail({ state, agent, onBack, act, outcome }: Props) {
               <circle className="at-ring" cx="38" cy="38" r="38" fill="none" stroke="#FF4D5E" strokeWidth="1.5" />
             </svg>
           )}
-          <Creature role={agent.role} state={visualStateOf(agent, outcome)} form={formOf(agent.level)} size={62} effects={false} sign={false} />
+          <Creature role={agent.role} state={visualStateOf(agent, outcome)} size={62} effects={false} sign={false} />
         </div>
         <div className="grow stack-5">
           <div className="row-gap-10">
@@ -63,7 +62,6 @@ export function AgentDetail({ state, agent, onBack, act, outcome }: Props) {
           <span className="body-sm text-2">
             {TIERS[agent.model].label} {ROLES[agent.role].label} · model <span className="text-1">{agent.model}</span>
           </span>
-          <span className="caption-sm text-body">Poziom {agent.level} · Forma {["I", "II", "III"][formOf(agent.level) - 1]}</span>
           {agent.description && <span className="caption-sm text-3">„{agent.description}”</span>}
         </div>
       </div>

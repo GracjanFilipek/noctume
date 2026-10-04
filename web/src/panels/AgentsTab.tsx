@@ -1,7 +1,6 @@
 import { OFFICE, ROLES, TIERS, type Agent, type AgentStatus, type GameState } from "@agent-tycoon/shared";
 import { currentTask, sortedAgents, stuckTask, taskProgress, visualStateOf } from "../game.ts";
 import { Creature } from "../creatures/Creature.tsx";
-import { formOf } from "../creatures/types.ts";
 import type { Outcome } from "../useOutcomes.ts";
 import { DormantModuleIcon, FailureSign, IdleSign, StateSign, StuckSign, SuccessSign, WorkingSign } from "../ui/icons.tsx";
 import { roleVar } from "../ui/roles.ts";
@@ -75,7 +74,7 @@ function AgentCard({ state, agent, outcome, onOpen }: { state: GameState; agent:
   return (
     <button type="button" className={`agent-card is-${agent.status}`} style={roleVar(agent.role)} onClick={onOpen} data-agent-status={agent.status}>
       <div className={`avatar avatar-60 is-${agent.status}`}>
-        <Creature role={agent.role} state={visualStateOf(agent, outcome)} form={formOf(agent.level)} size={agent.status === "idle" ? 46 : 50} effects={false} sign={false} />
+        <Creature role={agent.role} state={visualStateOf(agent, outcome)} size={agent.status === "idle" ? 46 : 50} effects={false} sign={false} />
       </div>
       <div className="agent-card-body">
         <div className="row-between">
@@ -83,7 +82,7 @@ function AgentCard({ state, agent, outcome, onOpen }: { state: GameState; agent:
           <StatusBadge status={agent.status} />
         </div>
         <span className="text-2 body-sm">
-          {TIERS[agent.model].label} {ROLES[agent.role].label} · {agent.model} · poz. {agent.level}
+          {TIERS[agent.model].label} {ROLES[agent.role].label} · {agent.model}
         </span>
         {agent.status === "stuck" && (
           <span className="body-sm text-red">

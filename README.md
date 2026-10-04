@@ -12,15 +12,17 @@ Całość jest pokazana jako stacja na skraju mgławicy: agenci przechodzą do s
 
 1. [Szybki start](#szybki-start)
 2. [Wymagania](#wymagania)
-3. [Tryby: Mock i Claude](#tryby-mock-i-claude)
-4. [Jak tego używać](#jak-tego-używać)
-5. [Jak to działa pod spodem](#jak-to-działa-pod-spodem)
-6. [Bezpieczeństwo](#bezpieczeństwo)
-7. [Koszty i limity](#koszty-i-limity)
-8. [Zapis stanu](#zapis-stanu)
-9. [Konfiguracja (zmienne środowiskowe)](#konfiguracja-zmienne-środowiskowe)
-10. [Ograniczenia i znane problemy](#ograniczenia-i-znane-problemy)
-11. [Dla deweloperów](#dla-deweloperów)
+3. [Uruchomienie agentów lokalnie — krok po kroku](#uruchomienie-agentów-lokalnie--krok-po-kroku)
+4. [Tryby: Mock i Claude](#tryby-mock-i-claude)
+5. [Jak tego używać](#jak-tego-używać)
+6. [Jak to działa pod spodem](#jak-to-działa-pod-spodem)
+7. [Bezpieczeństwo](#bezpieczeństwo)
+8. [Koszty i limity](#koszty-i-limity)
+9. [Zapis stanu](#zapis-stanu)
+10. [Konfiguracja (zmienne środowiskowe)](#konfiguracja-zmienne-środowiskowe)
+11. [Gdy coś nie działa](#gdy-coś-nie-działa)
+12. [Ograniczenia i znane problemy](#ograniczenia-i-znane-problemy)
+13. [Dla deweloperów](#dla-deweloperów)
 
 ---
 
@@ -51,6 +53,117 @@ Otwórz **http://localhost:5173**. Aplikacja startuje w trybie **Mock** — wszy
 | **macOS** | — | eksport do Word (`textutil`), „Pokaż w Finderze” |
 
 System: rozwijane i testowane na **macOS**. Na Linuksie działa wszystko poza eksportem DOCX i „Pokaż w Finderze” (PDF po ustawieniu `CHROME_BIN`). **Windows nie był testowany.**
+
+---
+
+## Uruchomienie agentów lokalnie — krok po kroku
+
+Tryb Mock działa od razu po `npm install`. Żeby agenci **naprawdę** wykonywali zadania, potrzebujesz czterech rzeczy na swoim komputerze: **Node.js**, **Claude Code**, **subskrypcji Claude zalogowanej w Claude Code** i dostępu do tego repozytorium. Poniżej po kolei, z poleceniami do sprawdzenia, że każdy krok się udał (przykłady dla macOS).
+
+### Krok 1. Node.js 20.12 lub nowszy
+
+```bash
+node -v
+```
+
+Jeśli polecenie nie istnieje albo wersja jest starsza niż `v20.12`, zainstaluj wersję LTS z [nodejs.org](https://nodejs.org) albo przez Homebrew:
+
+```bash
+brew install node
+```
+
+### Krok 2. Git i dostęp do repozytorium
+
+```bash
+git --version
+```
+
+Na macOS przy pierwszym użyciu system zaproponuje instalację narzędzi deweloperskich — zgódź się. **Repozytorium jest prywatne:** właściciel musi dodać Cię jako współpracownika na GitHubie, zanim `git clone` zadziała.
+
+### Krok 3. Claude Code (CLI)
+
+Claude Code to program, którym NOCTUA uruchamia każdego agenta. Zainstaluj go według [dokumentacji Claude Code](https://docs.claude.com) — w chwili pisania dostępny był instalator natywny i pakiet npm:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+albo:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+Sprawdź, że terminal go widzi:
+
+```bash
+claude --version
+```
+
+> **`command not found: claude`?** Instalator natywny kładzie program w `~/.local/bin`, którego może nie być w `PATH`. Dodaj go:
+> ```bash
+> echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+> ```
+> NOCTUA i tak sama zajrzy do `~/.local/bin/claude`, ale dla Twojej wygody w terminalu warto to ustawić.
+
+### Krok 4. Subskrypcja Claude i logowanie
+
+Potrzebujesz konta Claude z planem, który obejmuje Claude Code (**Pro** lub **Max**). Zaloguj się w CLI — otworzy się przeglądarka:
+
+```bash
+claude auth login
+```
+
+Sprawdź status:
+
+```bash
+claude auth status
+```
+
+Powinno być `"loggedIn": true` i `"authMethod": "claude.ai"`.
+
+> **Ważne:** NOCTUA działa z **logowaniem subskrypcją**. Klucz API (`ANTHROPIC_API_KEY`) jest celowo usuwany ze środowiska agentów, żeby nikt nie płacił za API, myśląc, że korzysta z subskrypcji.
+
+### Krok 5. Sprawdź, że Claude Code działa bez okna
+
+Agenci używają trybu headless (`claude -p`). Jedno krótkie wywołanie potwierdzi, że wszystko jest gotowe (zużywa odrobinę limitu):
+
+```bash
+claude -p "Odpowiedz jednym słowem: działa" --model haiku
+```
+
+Jeśli widzisz odpowiedź — Claude Code jest gotowy dla NOCTUA.
+
+### Krok 6. Pobierz i uruchom NOCTUA
+
+```bash
+git clone https://github.com/GracjanFilipek/agent-tycoon.git
+cd agent-tycoon
+npm install
+npm run dev
+```
+
+Otwórz **http://localhost:5173**.
+
+### Krok 7. Przełącz na Claude i daj pierwsze zadanie
+
+1. W prawym górnym rogu kliknij **Claude** i potwierdź.
+2. **Zatrudnij** agenta — np. Copywriter, poziom Junior (`haiku`, najtańszy w limicie).
+3. **ZADANIA → Nowa paczka:** tytuł, brief (np. *„Napisz 5 pomysłów na post na LinkedIn o automatyzacji w księgowości”*), format **Markdown**, zespół: Twój agent, zaznacz **start od razu**.
+4. Klik w agenta na stacji pokaże kroki na żywo. Gotowy plik znajdziesz w zakładce **PROJEKTY**.
+
+### Krok 8 (zalecany). Sprawdź zabezpieczenia na swoim komputerze
+
+```bash
+npm run check:security -w server -- --hard
+```
+
+Kilka krótkich wywołań `haiku`; oczekiwany wynik: `✅ Wszystkie reguły wytrzymały`. Więcej w [Bezpieczeństwo](#bezpieczeństwo).
+
+### Opcjonalnie
+
+- **PDF** — wymaga zainstalowanego Google Chrome (albo Chromium / Edge / Brave). Bez niego format PDF jest wyszarzony.
+- **Word (DOCX)** — działa tylko na macOS (wbudowany `textutil`).
 
 ---
 
@@ -210,12 +323,28 @@ Przykład: `RUNNER=claude TASK_TIMEOUT_MS=900000 npm run dev`
 
 ---
 
+## Gdy coś nie działa
+
+| Objaw | Przyczyna | Co zrobić |
+|---|---|---|
+| Agent od razu „utknął”, w logu **„Not logged in”** | Claude Code nie jest zalogowany subskrypcją (albo masz tylko klucz API) | `claude auth login`, potem `claude auth status` → `"loggedIn": true` |
+| **„Nie znaleziono programu `claude`”** | serwer nie widzi CLI | dodaj `~/.local/bin` do `PATH` (Krok 3) albo uruchom z `CLAUDE_BIN=/ścieżka/do/claude npm run dev` |
+| Agent utknął z **„przekroczył limit tur”** | zadanie za duże na jeden krok (15 / 25 / 30 tur zależnie od poziomu) | podziel zadanie, daj agenta na wyższym poziomie albo dołóż kolejną osobę do zespołu |
+| **„Przekroczono limit czasu”** | krok trwał dłużej niż 10 min | `TASK_TIMEOUT_MS=1200000 npm run dev` (20 min) |
+| Zadanie nieudane: **„Przerwane — serwer został zrestartowany”** | serwer został zatrzymany w trakcie pracy | uruchom zadanie ponownie przyciskiem w szczegółach paczki |
+| **PDF / Word wyszarzony** | brak Chrome / system inny niż macOS | zainstaluj Chrome albo ustaw `CHROME_BIN`; DOCX tylko na macOS |
+| `npm run dev`: **port zajęty** (`EADDRINUSE`) | działa już inna kopia NOCTUA albo inny program na 5173 / 3001 | zamknij poprzednią kopię (`Ctrl+C` w jej terminalu) |
+| Interfejs: **„brak połączenia”** | serwer nie działa | sprawdź terminal z `npm run dev` — serwer loguje tam błędy |
+| Chcesz zacząć od zera | — | zatrzymaj serwer, usuń `data/state.json` (opcjonalnie `workspaces/`) |
+
+---
+
 ## Ograniczenia i znane problemy
 
 - **Eksport DOCX i „Pokaż w Finderze” działają tylko na macOS.** Na innych systemach format Word jest wyszarzony z informacją, dlaczego.
 - **Windows nie był testowany** — uruchamianie `claude` jako procesu może wymagać poprawek.
 - **Wymagana w miarę świeża wersja Claude Code** (testowane na 2.1.198): używane są flagi `--tools`, `--permission-mode dontAsk`, `--json-schema`, `--max-turns`.
-- **Tylko logowanie subskrypcją** — sam klucz API nie zadziała (patrz [Tryb Claude](#claude)).
+- **Tylko logowanie subskrypcją** — sam klucz API nie zadziała (patrz [Krok 4](#krok-4-subskrypcja-claude-i-logowanie)).
 - **Restart w trakcie zadania** przerywa je (zob. [Zapis stanu](#zapis-stanu)).
 - **Maks. 12 agentów** i 1–5 zadań równolegle.
 

@@ -1,5 +1,5 @@
 /**
- * Researcher, Writer and Analyst — paths verbatim from design/agent-tycoon/CharacterSheet.dc.html.
+ * Researcher, Writer and Analyst — paths verbatim from design/mockups/CharacterSheet.dc.html.
  * The state drawings in the sheet are Forma I; Forms II/III add the parts shown in the evolution columns.
  */
 import { Burst, Scanlines, Shadow, SmokeAndSparks } from "./common.tsx";

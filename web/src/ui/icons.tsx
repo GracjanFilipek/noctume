@@ -1,5 +1,5 @@
 /**
- * SVG icons copied from the design mockups (design/agent-tycoon/*.dc.html).
+ * SVG icons copied from the design mockups (design/mockups/*.dc.html).
  * Icons marked "not in mockup" were drawn to match for the Developer and Reviewer roles.
  */
 import type { AgentStatus, Role } from "@agent-tycoon/shared";

@@ -24,6 +24,7 @@ Całość jest pokazana jako stacja na skraju mgławicy: agenci przechodzą do s
 12. [Gdy coś nie działa](#gdy-coś-nie-działa)
 13. [Ograniczenia i znane problemy](#ograniczenia-i-znane-problemy)
 14. [Dla deweloperów](#dla-deweloperów)
+15. [Licencja](#licencja)
 
 ---
 
@@ -59,7 +60,7 @@ System: rozwijane i testowane na **macOS**. Na Linuksie działa wszystko poza ek
 
 ## Uruchomienie agentów lokalnie — krok po kroku
 
-Tryb Mock działa od razu po `npm install`. Żeby agenci **naprawdę** wykonywali zadania, potrzebujesz czterech rzeczy na swoim komputerze: **Node.js**, **Claude Code**, **subskrypcji Claude zalogowanej w Claude Code** i dostępu do tego repozytorium. Poniżej po kolei, z poleceniami do sprawdzenia, że każdy krok się udał (przykłady dla macOS).
+Tryb Mock działa od razu po `npm install`. Żeby agenci **naprawdę** wykonywali zadania, potrzebujesz czterech rzeczy na swoim komputerze: **Node.js**, **Claude Code**, **subskrypcji Claude zalogowanej w Claude Code** i Gita. Poniżej po kolei, z poleceniami do sprawdzenia, że każdy krok się udał (przykłady dla macOS).
 
 ### Krok 1. Node.js 20.12 lub nowszy
 
@@ -73,13 +74,13 @@ Jeśli polecenie nie istnieje albo wersja jest starsza niż `v20.12`, zainstaluj
 brew install node
 ```
 
-### Krok 2. Git i dostęp do repozytorium
+### Krok 2. Git
 
 ```bash
 git --version
 ```
 
-Na macOS przy pierwszym użyciu system zaproponuje instalację narzędzi deweloperskich — zgódź się. **Repozytorium jest prywatne:** właściciel musi dodać Cię jako współpracownika na GitHubie, zanim `git clone` zadziała.
+Na macOS przy pierwszym użyciu system zaproponuje instalację narzędzi deweloperskich — zgódź się.
 
 ### Krok 3. Claude Code (CLI)
 
@@ -274,6 +275,7 @@ NOCTUME uruchamia agentów **na Twoim komputerze**, więc domyślne ustawienia s
 - **Bez pomijania uprawnień.** NOCTUME nigdy nie używa `--dangerously-skip-permissions` ani trybu `bypassPermissions`.
 - **Bez Twoich serwerów MCP** (`--strict-mcp-config`).
 - **Serwer słucha tylko lokalnie** (`127.0.0.1`), pliki wyników są udostępniane wyłącznie z katalogu danego zadania.
+- **Obce strony nie mają dostępu.** Serwer odrzuca (`403`) zapytania i połączenia WebSocket, których nagłówek `Host` albo `Origin` nie wskazuje na ten komputer — strona otwarta w przeglądarce nie odczyta stanu ani nie uruchomi zadań, także przez DNS rebinding.
 
 **Sprawdź to u siebie** — skrypt celowo każe agentowi złamać każdą z reguł (Bash, zapis poza katalogiem ścieżką absolutną i przez `../`, odczyt pliku z sekretem) i ocenia wynik **po plikach na dysku**, nie po tym, co agent powie. Kosztuje kilka krótkich wywołań `haiku`:
 
@@ -404,7 +406,7 @@ web/      Vite + React
   src/creatures/    postacie SVG: 5 ról × 5 stanów × 3 formy
   src/panels/       HUD i prawy panel (agenci, zadania, projekty)
   src/theme/        tokeny, animacje, style
-design/agent-tycoon/  makiety interfejsu (.dc.html)
+design/mockups/  makiety interfejsu (.dc.html)
 scripts/shots.mjs     zrzuty ekranu do porównań z makietami
 ```
 
@@ -440,3 +442,9 @@ Stan na żywo: WebSocket `/ws` (pełny stan po każdej zmianie). Akcje przez RES
 | `PATCH` | `/api/settings` | tryb (`mock`/`claude`), limit równoległości |
 
 Runnery mają wspólny interfejs (`server/src/runners/AgentRunner.ts`) — kolejny backend (np. Agent SDK z kluczem API) to nowa klasa, bez zmian w reszcie.
+
+---
+
+## Licencja
+
+[MIT](LICENSE) © 2026 Gracjan Filipek

@@ -5,7 +5,7 @@ import { RoleGlyph } from "../ui/icons.tsx";
 import { ZONES } from "../ui/roles.ts";
 
 /**
- * Dev page (/#arkusz): every creature rendered by <Creature>, laid out like design/agent-tycoon/CharacterSheet
+ * Dev page (/#arkusz): every creature rendered by <Creature>, laid out like design/mockups/CharacterSheet
  * so it can be screenshotted and compared with the mockup.
  */
 const STATES: { id: VisualState; label: string; card: string; border: string; stage: string }[] = [

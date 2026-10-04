@@ -1,7 +1,7 @@
 /**
  * Screenshots for comparing the game with the design mockups (uses the locally installed Chrome).
  *
- *   node scripts/shots.mjs ref            # render design/agent-tycoon/*.dc.html → design/shots/reference-*.png
+ *   node scripts/shots.mjs ref            # render design/mockups/*.dc.html → design/shots/reference-*.png
  *   node scripts/shots.mjs app [--seed]   # screenshot the running game (localhost:5173) → design/shots/app-*.png
  *
  * The .dc.html mockups are templates for a design tool. For a static reference we evaluate their
@@ -13,7 +13,7 @@ import vm from "node:vm";
 import { chromium } from "playwright-core";
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const DESIGN = path.join(ROOT, "design/agent-tycoon");
+const DESIGN = path.join(ROOT, "design/mockups");
 const OUT = path.join(ROOT, "design/shots");
 const APP = process.env.APP_URL ?? "http://localhost:5173";
 const API = process.env.API_URL ?? "http://127.0.0.1:3001/api";

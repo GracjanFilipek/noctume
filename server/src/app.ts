@@ -12,6 +12,7 @@ import { MockRunner } from "./runners/MockRunner.ts";
 import { ClaudeCliRunner } from "./runners/ClaudeCliRunner.ts";
 import { registerRoutes } from "./routes.ts";
 import { detectCapabilities } from "./export.ts";
+import { isLocalRequest } from "./localOnly.ts";
 
 export interface ServerOptions {
   /** 0 = any free port (desktop app). */
@@ -60,6 +61,13 @@ export async function startServer(opts: ServerOptions = {}): Promise<RunningServ
 
   const app = Fastify({ logger: opts.logger === false ? false : { level: "info" } });
   await app.register(websocket);
+
+  // Before routing, so it also covers the WebSocket upgrade and the static UI.
+  app.addHook("onRequest", async (req, reply) => {
+    if (!isLocalRequest(req.headers.host, req.headers.origin)) {
+      return reply.status(403).send({ error: "Dostęp tylko z tego komputera (localhost)." });
+    }
+  });
 
   app.setErrorHandler((err, _req, reply) => {
     if (err instanceof GameError) return reply.status(err.statusCode).send({ error: err.message });

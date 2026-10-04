@@ -1,6 +1,6 @@
 /**
- * NOCTUA desktop app: starts the local server inside the Electron main process and shows the UI in a window.
- * Data lives in the per-user folder (~/Library/Application Support/Noctua), not next to the app.
+ * NOCTUME desktop app: starts the local server inside the Electron main process and shows the UI in a window.
+ * Data lives in the per-user folder (~/Library/Application Support/Noctume), not next to the app.
  */
 import { app, BrowserWindow, dialog, shell } from "electron";
 import { execFileSync } from "node:child_process";
@@ -25,11 +25,11 @@ function adoptLoginShellPath() {
   if (process.platform === "win32") return;
   try {
     const shellBin = process.env.SHELL || "/bin/zsh";
-    const out = execFileSync(shellBin, ["-ilc", 'printf "__NOCTUA_PATH__%s__NOCTUA_PATH__" "$PATH"'], {
+    const out = execFileSync(shellBin, ["-ilc", 'printf "__NOCTUME_PATH__%s__NOCTUME_PATH__" "$PATH"'], {
       encoding: "utf8",
       timeout: 5000,
     });
-    const found = out.match(/__NOCTUA_PATH__(.*)__NOCTUA_PATH__/)?.[1];
+    const found = out.match(/__NOCTUME_PATH__(.*)__NOCTUME_PATH__/)?.[1];
     if (found) process.env.PATH = [found, process.env.PATH].filter(Boolean).join(path.delimiter);
   } catch {
     // keep the default PATH; the server also checks the usual install folders
@@ -40,9 +40,9 @@ async function boot() {
   // From source (npm run desktop) the Dock would show Electron's icon; the packaged app has its own.
   if (process.platform === "darwin" && !app.isPackaged) app.dock?.setIcon(path.join(here, "icon.png"));
   adoptLoginShellPath();
-  process.env.NOCTUA_HOME ??= app.getPath("userData");
+  process.env.NOCTUME_HOME ??= app.getPath("userData");
 
-  // Imported only now: the server reads NOCTUA_HOME when its modules load.
+  // Imported only now: the server reads NOCTUME_HOME when its modules load.
   const { startServer } = (await import(pathToFileURL(path.join(here, "server.mjs")).href)) as {
     startServer: (o: object) => Promise<RunningServer>;
   };
@@ -54,7 +54,7 @@ async function boot() {
     height: 960,
     minWidth: 1100,
     minHeight: 700,
-    title: "Noctua",
+    title: "Noctume",
     backgroundColor: "#060907",
     show: false,
     webPreferences: { contextIsolation: true, sandbox: true, nodeIntegration: false },
@@ -86,7 +86,7 @@ if (!app.requestSingleInstanceLock()) {
   });
 
   app.whenReady().then(boot, (err) => {
-    dialog.showErrorBox("Noctua nie wystartowała", String(err?.stack ?? err));
+    dialog.showErrorBox("Noctume nie wystartowała", String(err?.stack ?? err));
     app.quit();
   });
 

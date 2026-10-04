@@ -39,7 +39,7 @@ export function TopBar({ state, connection, act }: Props) {
   return (
     <header className="hud">
       <div className="hud-logo">
-        <span>NOCTUA</span>
+        <span>NOCTUME</span>
       </div>
 
       <div className="hud-reading" title="Ile te wywołania kosztowałyby po stawkach API. Na subskrypcji nic nie płacisz — to miara zużycia limitu.">

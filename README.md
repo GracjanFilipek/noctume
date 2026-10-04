@@ -1,10 +1,10 @@
-# NOCTUA
+# NOCTUME
 
 **Lokalne narzędzie do zarządzania zespołem agentów AI.** Zatrudniasz agentów (researcher, copywriter, developer, analityk, recenzent), dajesz im zadania, a oni naprawdę je wykonują — każdy agent to osobne wywołanie **Claude Code w trybie headless** (`claude -p`) na Twoim komputerze, w ramach **Twojej subskrypcji Claude**. Wyniki lądują jako pliki (Markdown, CSV, HTML, PDF, Word) w katalogu zadania.
 
 Całość jest pokazana jako stacja na skraju mgławicy: agenci przechodzą do swoich modułów, gdy pracują, odpoczywają w kapsułach, gdy czekają, a gdy coś się zepsuje — widać to od razu.
 
-> Repo zawiera tylko kod. Nie ma w nim żadnych kluczy ani kont — agenci korzystają z Claude Code zalogowanego na komputerze, na którym uruchamiasz NOCTUA.
+> Repo zawiera tylko kod. Nie ma w nim żadnych kluczy ani kont — agenci korzystają z Claude Code zalogowanego na komputerze, na którym uruchamiasz NOCTUME.
 
 ---
 
@@ -30,8 +30,8 @@ Całość jest pokazana jako stacja na skraju mgławicy: agenci przechodzą do s
 ## Szybki start
 
 ```bash
-git clone https://github.com/GracjanFilipek/agent-tycoon.git
-cd agent-tycoon
+git clone https://github.com/GracjanFilipek/noctume.git
+cd noctume
 npm install
 npm run dev
 ```
@@ -83,7 +83,7 @@ Na macOS przy pierwszym użyciu system zaproponuje instalację narzędzi dewelop
 
 ### Krok 3. Claude Code (CLI)
 
-Claude Code to program, którym NOCTUA uruchamia każdego agenta. Zainstaluj go według [dokumentacji Claude Code](https://docs.claude.com) — w chwili pisania dostępny był instalator natywny i pakiet npm:
+Claude Code to program, którym NOCTUME uruchamia każdego agenta. Zainstaluj go według [dokumentacji Claude Code](https://docs.claude.com) — w chwili pisania dostępny był instalator natywny i pakiet npm:
 
 ```bash
 curl -fsSL https://claude.ai/install.sh | bash
@@ -105,7 +105,7 @@ claude --version
 > ```bash
 > echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
 > ```
-> NOCTUA i tak sama zajrzy do `~/.local/bin/claude`, ale dla Twojej wygody w terminalu warto to ustawić.
+> NOCTUME i tak sama zajrzy do `~/.local/bin/claude`, ale dla Twojej wygody w terminalu warto to ustawić.
 
 ### Krok 4. Subskrypcja Claude i logowanie
 
@@ -123,7 +123,7 @@ claude auth status
 
 Powinno być `"loggedIn": true` i `"authMethod": "claude.ai"`.
 
-> **Ważne:** NOCTUA działa z **logowaniem subskrypcją**. Klucz API (`ANTHROPIC_API_KEY`) jest celowo usuwany ze środowiska agentów, żeby nikt nie płacił za API, myśląc, że korzysta z subskrypcji.
+> **Ważne:** NOCTUME działa z **logowaniem subskrypcją**. Klucz API (`ANTHROPIC_API_KEY`) jest celowo usuwany ze środowiska agentów, żeby nikt nie płacił za API, myśląc, że korzysta z subskrypcji.
 
 ### Krok 5. Sprawdź, że Claude Code działa bez okna
 
@@ -133,13 +133,13 @@ Agenci używają trybu headless (`claude -p`). Jedno krótkie wywołanie potwier
 claude -p "Odpowiedz jednym słowem: działa" --model haiku
 ```
 
-Jeśli widzisz odpowiedź — Claude Code jest gotowy dla NOCTUA.
+Jeśli widzisz odpowiedź — Claude Code jest gotowy dla NOCTUME.
 
-### Krok 6. Pobierz i uruchom NOCTUA
+### Krok 6. Pobierz i uruchom NOCTUME
 
 ```bash
-git clone https://github.com/GracjanFilipek/agent-tycoon.git
-cd agent-tycoon
+git clone https://github.com/GracjanFilipek/noctume.git
+cd noctume
 npm install
 npm run dev
 ```
@@ -188,7 +188,7 @@ Agenci wołają prawdziwy Claude Code. Potrzebujesz:
    ```
 3. **Żeby serwer znalazł program `claude`** — szuka go w `PATH`, potem w `~/.local/bin/claude`. Jeśli masz go gdzie indziej, uruchom z `CLAUDE_BIN=/pełna/ścieżka/do/claude npm run dev`.
 
-> ⚠️ **Tylko subskrypcja, nie klucz API.** NOCTUA celowo usuwa `ANTHROPIC_API_KEY` ze środowiska agentów, żeby nikt przypadkiem nie płacił za API, myśląc, że korzysta z subskrypcji. Jeśli masz wyłącznie klucz API (bez logowania subskrypcją), agenci zgłoszą „Not logged in”.
+> ⚠️ **Tylko subskrypcja, nie klucz API.** NOCTUME celowo usuwa `ANTHROPIC_API_KEY` ze środowiska agentów, żeby nikt przypadkiem nie płacił za API, myśląc, że korzysta z subskrypcji. Jeśli masz wyłącznie klucz API (bez logowania subskrypcją), agenci zgłoszą „Not logged in”.
 
 Tryb możesz też wymusić przy starcie: `RUNNER=claude npm run dev` albo `RUNNER=mock npm run dev`.
 
@@ -267,11 +267,11 @@ claude -p "<brief + zespół + co zrobili poprzednicy>" \
 
 ## Bezpieczeństwo
 
-NOCTUA uruchamia agentów **na Twoim komputerze**, więc domyślne ustawienia są zachowawcze:
+NOCTUME uruchamia agentów **na Twoim komputerze**, więc domyślne ustawienia są zachowawcze:
 
 - **Bez powłoki.** Agenci nie mają narzędzia `Bash` — nie istnieje w ich zestawie (`--tools`) i jest dodatkowo zablokowane (`--disallowedTools`). Bash to **moduł premium**: odblokowujesz go świadomie dla konkretnego agenta w jego karcie, po ostrzeżeniu.
 - **Tylko katalog zadania.** Odczyt i zapis są ograniczone regułami uprawnień do `workspaces/<id-zadania>/` (`Read(./**)`, `Edit(./**)`), a tryb `dontAsk` odrzuca wszystko inne, zamiast czekać na zgodę. Agent ma to też napisane wprost w prompcie.
-- **Bez pomijania uprawnień.** NOCTUA nigdy nie używa `--dangerously-skip-permissions` ani trybu `bypassPermissions`.
+- **Bez pomijania uprawnień.** NOCTUME nigdy nie używa `--dangerously-skip-permissions` ani trybu `bypassPermissions`.
 - **Bez Twoich serwerów MCP** (`--strict-mcp-config`).
 - **Serwer słucha tylko lokalnie** (`127.0.0.1`), pliki wyników są udostępniane wyłącznie z katalogu danego zadania.
 
@@ -312,7 +312,7 @@ Uszkodzony plik stanu jest odkładany jako `data/state.corrupt-<czas>.json`, a s
 
 ## Aplikacja na Maca
 
-NOCTUA może działać jako zwykła aplikacja (Electron) — bez terminala i bez `npm run dev`. Serwer startuje razem z oknem, a zamknięcie okna kończy pracę.
+NOCTUME może działać jako zwykła aplikacja (Electron) — bez terminala i bez `npm run dev`. Serwer startuje razem z oknem, a zamknięcie okna kończy pracę.
 
 ### Uruchomienie z kodu
 
@@ -320,7 +320,7 @@ NOCTUA może działać jako zwykła aplikacja (Electron) — bez terminala i bez
 npm run desktop
 ```
 
-Buduje interfejs i serwer, potem otwiera okno **Noctua**.
+Buduje interfejs i serwer, potem otwiera okno **Noctume**.
 
 ### Zbudowanie aplikacji `.app`
 
@@ -328,13 +328,13 @@ Buduje interfejs i serwer, potem otwiera okno **Noctua**.
 npm run desktop:pack
 ```
 
-Gotowa aplikacja: `desktop/release/mac-arm64/Noctua.app` — przeciągnij ją do **Aplikacji**. (`npm run desktop:dmg` zbuduje instalator `.dmg`.)
+Gotowa aplikacja: `desktop/release/mac-arm64/Noctume.app` — przeciągnij ją do **Aplikacji**. (`npm run desktop:dmg` zbuduje instalator `.dmg`.)
 
 ### Co warto wiedzieć
 
 - **Wymagania są te same:** Claude Code zainstalowany i zalogowany subskrypcją ([Krok 3–4](#krok-3-claude-code-cli)). Aplikacja sama wczytuje `PATH` z Twojej powłoki i sprawdza typowe lokalizacje, więc znajdzie `claude` także po uruchomieniu z Docka. Jeśli go nie znajdzie, nie pozwoli włączyć trybu Claude i powie dlaczego.
-- **Dane aplikacji** leżą w `~/Library/Application Support/Noctua` (`data/state.json` i `workspaces/`) — osobno od danych wersji z `npm run dev`.
-- **Pierwsze zadanie w trybie Claude:** macOS może zapytać, czy *Noctua* może użyć danych logowania Claude Code z pęku kluczy — kliknij **Zawsze pozwalaj**.
+- **Dane aplikacji** leżą w `~/Library/Application Support/Noctume` (`data/state.json` i `workspaces/`) — osobno od danych wersji z `npm run dev`.
+- **Pierwsze zadanie w trybie Claude:** macOS może zapytać, czy *Noctume* może użyć danych logowania Claude Code z pęku kluczy — kliknij **Zawsze pozwalaj**.
 - **Aplikacja nie jest podpisana** ani notaryzowana przez Apple. Przy pierwszym uruchomieniu kliknij ją prawym przyciskiem → **Otwórz** (albo zezwól w *Ustawienia systemowe → Prywatność i ochrona*). Do rozsyłania innym potrzebny byłby certyfikat Apple Developer.
 - **Zamknięcie aplikacji przerywa trwające zadania** (procesy `claude` są zatrzymywane, a zadania oznaczane jako przerwane — można je uruchomić ponownie). Stan zapisuje się przy każdej zmianie i przy zamykaniu.
 - **Rozmiar:** ok. 290 MB (Electron zawiera własną przeglądarkę). Ikona: `desktop/build/icon.png` (1024 × 1024, z przezroczystymi rogami) — `electron-builder` robi z niej `icon.icns`.
@@ -351,7 +351,7 @@ Gotowa aplikacja: `desktop/release/mac-arm64/Noctua.app` — przeciągnij ją do
 | `CHROME_BIN` | Chrome / Chromium / Edge / Brave w `/Applications` | przeglądarka do eksportu PDF |
 | `TASK_TIMEOUT_MS` | `600000` (10 min) | maks. czas jednego kroku agenta |
 | `PORT` | `3001` | port serwera API w trybie `npm run dev` — **uwaga:** interfejs (`web/vite.config.ts`) ma ten port wpisany na sztywno w proxy; aplikacja na Maca wybiera wolny port sama |
-| `NOCTUA_HOME` | katalog repo (`npm run dev`) / `~/Library/Application Support/Noctua` (aplikacja) | gdzie trzymać `data/` i `workspaces/` |
+| `NOCTUME_HOME` | katalog repo (`npm run dev`) / `~/Library/Application Support/Noctume` (aplikacja) | gdzie trzymać `data/` i `workspaces/` |
 
 Przykład: `RUNNER=claude TASK_TIMEOUT_MS=900000 npm run dev`
 
@@ -367,7 +367,7 @@ Przykład: `RUNNER=claude TASK_TIMEOUT_MS=900000 npm run dev`
 | **„Przekroczono limit czasu”** | krok trwał dłużej niż 10 min | `TASK_TIMEOUT_MS=1200000 npm run dev` (20 min) |
 | Zadanie nieudane: **„Przerwane — serwer został zrestartowany”** | serwer został zatrzymany w trakcie pracy | uruchom zadanie ponownie przyciskiem w szczegółach paczki |
 | **PDF / Word wyszarzony** | brak Chrome / system inny niż macOS | zainstaluj Chrome albo ustaw `CHROME_BIN`; DOCX tylko na macOS |
-| `npm run dev`: **port zajęty** (`EADDRINUSE`) | działa już inna kopia NOCTUA albo inny program na 5173 / 3001 | zamknij poprzednią kopię (`Ctrl+C` w jej terminalu) |
+| `npm run dev`: **port zajęty** (`EADDRINUSE`) | działa już inna kopia NOCTUME albo inny program na 5173 / 3001 | zamknij poprzednią kopię (`Ctrl+C` w jej terminalu) |
 | Interfejs: **„brak połączenia”** | serwer nie działa | sprawdź terminal z `npm run dev` — serwer loguje tam błędy |
 | Chcesz zacząć od zera | — | zatrzymaj serwer, usuń `data/state.json` (opcjonalnie `workspaces/`) |
 
@@ -413,7 +413,7 @@ scripts/shots.mjs     zrzuty ekranu do porównań z makietami
 ```bash
 npm run dev                               # serwer + interfejs
 npm run desktop                           # aplikacja Electron z kodu
-npm run desktop:pack                      # Noctua.app → desktop/release/
+npm run desktop:pack                      # Noctume.app → desktop/release/
 npm run typecheck                         # TypeScript we wszystkich pakietach
 npm test                                  # testy serwera (parser strumienia, zapis stanu)
 npm run check:security -w server -- --hard  # test piaskownicy na prawdziwym Claude Code

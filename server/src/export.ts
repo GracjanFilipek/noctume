@@ -48,7 +48,7 @@ export async function convertDeliverable(format: OutputFormat, dir: string, sour
 async function htmlToPdf(input: string, output: string) {
   const chrome = chromeBin();
   if (!chrome) throw new Error("Nie znaleziono Chrome — eksport PDF niedostępny (ustaw CHROME_BIN).");
-  const profile = await mkdtemp(path.join(tmpdir(), "agent-tycoon-chrome-"));
+  const profile = await mkdtemp(path.join(tmpdir(), "noctume-chrome-"));
   const child = spawn(
     chrome,
     [

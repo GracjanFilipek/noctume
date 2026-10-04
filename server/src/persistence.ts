@@ -3,13 +3,13 @@ import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { FORMATS, ROLES, SAFE_TOOLS, TIERS, type Agent, type Capabilities, type GameState, type RunnerKind, type Task } from "@agent-tycoon/shared";
 import { initialState, type Store } from "./store.ts";
-import { NOCTUA_HOME } from "./workspace.ts";
+import { NOCTUME_HOME } from "./workspace.ts";
 
-export const DATA_DIR = path.join(NOCTUA_HOME, "data");
+export const DATA_DIR = path.join(NOCTUME_HOME, "data");
 export const STATE_FILE = path.join(DATA_DIR, "state.json");
 const SAVE_DELAY_MS = 300;
 
-export const INTERRUPTED = "Przerwane — NOCTUA została zamknięta lub zrestartowana w trakcie pracy.";
+export const INTERRUPTED = "Przerwane — NOCTUME została zamknięta lub zrestartowana w trakcie pracy.";
 
 /**
  * Loads the saved state (or starts fresh). Capabilities are always re-detected; the runner comes from the file

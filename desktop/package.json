@@ -1,8 +1,8 @@
 {
   "name": "@agent-tycoon/desktop",
-  "productName": "Noctua",
+  "productName": "Noctume",
   "version": "0.1.0",
-  "description": "NOCTUA \u2014 lokalne narz\u0119dzie do zarz\u0105dzania zespo\u0142em agent\u00f3w Claude Code",
+  "description": "NOCTUME \u2014 lokalne narz\u0119dzie do zarz\u0105dzania zespo\u0142em agent\u00f3w Claude Code",
   "author": "Gracjan Filipek",
   "private": true,
   "type": "module",
@@ -20,8 +20,8 @@
     "esbuild": "^0.28.2"
   },
   "build": {
-    "appId": "com.gracjanfilipek.noctua",
-    "productName": "Noctua",
+    "appId": "com.gracjanfilipek.noctume",
+    "productName": "Noctume",
     "directories": {
       "output": "release",
       "buildResources": "build"
